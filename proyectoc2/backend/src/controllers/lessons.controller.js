@@ -3,13 +3,21 @@ const lessonsController = {};
 const Lesson = require('../models/Lesson');
 const LessonSubscription = require('../models/LessonSubscription');
 
+/**
+ * 
+ */
+lessonsController.getLessonsById = async (req, res) => {
+    const lessons = await Lesson.findById(req.params.id);
+    res.json(lessons);
+}
+
 /** 
  * Devuelve todas las clases, las cuales estoy suscrito para continuar
  * estudiando
  * @param req.params.id --> userId, el id del usuario para consultar sus clases suscritas
  * @returns todas las clases suscritas pertenecientes al userId
  */
-lessonsController.getMySubscribedLessons = async (req, res) => {
+lessonsController.getMyLessons = async (req, res) => {
     const lessonsSubscribed = await LessonSubscription.findById(req.params.id);
     res.json(lessonsSubscribed);
 }
@@ -17,8 +25,8 @@ lessonsController.getMySubscribedLessons = async (req, res) => {
 /**
  * Crear una nueva clase 
  * @param name nombre de la clase
- * @param owner nombre del creador de la clase
- * @param categorie categorieId al cual pertenece esta clase
+ * @param owner usuario creador de la clase
+ * @param categorie categoria a la cual pertenece esta clase
  */
 lessonsController.createLesson = async (req, res) => {
     const { name, owner, categorie } = req.body;
