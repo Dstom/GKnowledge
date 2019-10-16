@@ -1,18 +1,31 @@
 const lessonsController = {};
 
 const Lesson = require('../models/Lesson');
+const LessonSubscription = require('../models/LessonSubscription');
 
-lessonsController.getLessons = async (req, res) => {
-    const lessons = await Lesson.find();
-    res.json(lessons);
+/** 
+ * Devuelve todas las clases, las cuales estoy suscrito para continuar
+ * estudiando
+ * @param req.params.id --> userId, el id del usuario para consultar sus clases suscritas
+ * @returns todas las clases suscritas pertenecientes al userId
+ */
+lessonsController.getMySubscribedLessons = async (req, res) => {
+    const lessonsSubscribed = await LessonSubscription.findById(req.params.id);
+    res.json(lessonsSubscribed);
 }
+
+/**
+ * Crear una nueva clase 
+ * @param name nombre de la clase
+ * @param owner nombre del creador de la clase
+ * @param categorie categorieId al cual pertenece esta clase
+ */
 lessonsController.createLesson = async (req, res) => {
-    const { title, content, data, author } = req.body;
-    const newNote = new Note({
-        title,
-        content,
-        data,
-        author
+    const { name, owner, categorie } = req.body;
+    const newNote = new Lesson({
+        name,
+        owner,
+        categorie
     });
     
     await newNote.save();
@@ -33,14 +46,11 @@ lessonsController.updateLesson = async (req, res) => {
         author
     });
     res.json({message: "Lesson updated"});
-
-
 }
 
 lessonsController.deleteLesson = async (req, res) => {
     await Note.findByIdAndDelete(req.params.id);
     res.json("Lesson Deleted");
 }
-
 
 module.exports = lessonsController;

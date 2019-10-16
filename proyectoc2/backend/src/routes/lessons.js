@@ -11,6 +11,5 @@ router.route('/:id')
     .delete(deleteLesson)
     .put(updateLesson)
     .get(getLesson);
-
-
+    
 module.exports = router;
