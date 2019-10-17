@@ -1,41 +1,59 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+
+// Material Ui
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import BathtubIcon from '@material-ui/icons/Bathtub';
 
 import logo from '../images/logo_transparent.png';
 
-export default class Navigation extends Component {
-    render() {
-        return (
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <Link className="navbar-brand" to="/">                        
-                         GatherKnowledge
-                    </Link>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
+const useStyles = makeStyles(theme => ({
+    root: {
+        flexGrow: 1,
+    },    
+    title: {
+        flexGrow: 1,
+    },
+}));
 
-                    <div className="collapse navbar-collapse" id="navbarNav">
+//export default class Navigation extends Component {
+export default function Navigation() {
+    const classes = useStyles();
 
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/categorias">Buscar FlashCards</Link> 
-                            </li>
+    return (
+        <div className={classes.root} >
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start"  color="inherit" aria-label="menu">
+                    <BathtubIcon />
+                    </IconButton>
 
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/flashcard/create">Crear FlashCards</Link>
-                            </li>
-                        </ul>
-                        <ul className="navbar-nav ml-auto">
+                    <Typography variant="h6" className={classes.title}>
+                        GKnowledge
+                    </Typography>
 
-                            <li className="nav-item active">
-                                <Link className="nav-link" to="/login">Ingresar</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/create">Registrarse</Link>
-                            </li> 
-                        </ul>
-                    </div>
-            </nav>
-        )
-    }
+                    <Button color={'inherit'}
+                        component={Link}
+                        to={'/login'}>
+                        Ingresar
+                    </Button>
+
+                    <Button
+                        color={'inherit'}
+                        component={Link}
+                        to={'/create'}>
+                        Registro
+                    </Button>
+
+
+                </Toolbar>
+            </AppBar>
+        </div>
+    );
 }

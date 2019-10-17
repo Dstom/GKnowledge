@@ -46,6 +46,11 @@ lessonsController.getLesson = async (req, res) =>{
     res.json(note);
 };
 
+lessonsController.getLessons = async (req, res) => {
+   const lessons = await Lesson.find();  
+   res.json(lessons);
+};
+
 lessonsController.updateLesson = async (req, res) => {
     const { title, content, author } = req.body;
     await Note.findOneAndUpdate({_id: req.params.id},{

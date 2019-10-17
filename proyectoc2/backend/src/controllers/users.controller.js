@@ -15,9 +15,8 @@ userController.getUsers = async (req, res) => {
  */
 
 userController.createUser = async (req, res) => {    
-    const { username, email, password, name, lastname } = req.body;
-        const newUser = new User({
-        username,
+    const { email, password, name, lastname } = req.body;
+        const newUser = new User({        
         email,
         password,
         name,
