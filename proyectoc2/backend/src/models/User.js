@@ -8,14 +8,9 @@ const userSchema = new Schema({
     password: {type: String, required: true},
     name: {type: String, required: true},
     lastname: {type: String, required: true},
+    register_date: { type: Date, default: Date.now}
   //  role: {type: String, required: true},
-    state: {type:String, required: true, default: 1},
-    lessons: [{
-      type: Schema.Types.ObjectId,
-      ref: 'Lesson'
-    }]
-}, {
-    timestamps: true
+ //   state: {type:String, required: true, default: 1}   
 });
 
 //UserSchema.methods.encryptPassword = async (password) => {

@@ -18,6 +18,6 @@ app.use(express.json());
 //app.get
 app.use('/api/lessons', require('./routes/lessons'));
 app.use('/api/users', require('./routes/users'))
-//app.use('/api/notes', require('./routes/notes'));
+app.use('/api/auth', require('./routes/auth'));
 
 module.exports = app;

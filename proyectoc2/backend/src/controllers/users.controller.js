@@ -1,39 +1,64 @@
 const userController = {};
 
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 
 /**
- * Get all Users
+ * @route GET api/users
+ * @desc Reegister new user
+ * @access Public
  */
-userController.getUsers = async (req, res) => {
-    const users = await User.find();
-    res.json(users);
+userController.registerUser = async (req, res) => {
+    const { name, lastname, email, password} = req.body;
+
+    if(!name || !lastname || !email || !password){
+        return res.status(400).json({msg: 'Porfavor ingrese todos los campos'});
+    }
+
+    User.findOne({ email })
+    .then(user => {
+        if(user) return res.status(400).json({msg: 'Este correo está en uso'});
+
+        const newUser = new User({
+            name,
+            lastname,
+            email,
+            password
+        });
+
+        // Create salt & hash
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if(err) throw err;
+                newUser.password = hash;
+                newUser.save()
+                .then(user => {
+
+                    jwt.sign(
+                        { id: user.id },
+                        config.get('jwtSecret'),
+                        { expiresIn: 3600 },
+                        (err, token) => {
+                            if(err) throw err;
+                            res.json({
+                                token,
+                                user:{
+                                    id: user.id,
+                                    name: user.name,
+                                    email: user.email
+                                }
+                            });
+                        } 
+                    )
+                    
+                });
+            })
+        })
+    })
 }
 
-/**
- * Create User
- */
-
-userController.createUser = async (req, res) => {    
-    const { email, password, name, lastname } = req.body;
-        const newUser = new User({        
-        email,
-        password,
-        name,
-        lastname    
-    });   
-
-    await newUser.save();
-    res.json({message: "User Created"});
-}
-
-/**
- * Get User
- */
-userController.getUser = async (req, res) => {
-    const user = await User.findById(req.params.id);
-    res.json(user);
-}
 /**
  * Update User
  */
@@ -44,15 +69,6 @@ userController.updateUser = async (req, res) => {
         name,
         lastname
     })
-}
-
-/**
- * Delete User
- */
-userController.deleteUser = async (req, res) => {
-    await User.findByIdAndDelete(req.params.id);
-    res.json({message: "User deleted"});
-
 }
 
 module.exports = userController;
