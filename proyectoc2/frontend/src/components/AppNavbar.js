@@ -14,6 +14,7 @@ import PropTypes from 'prop-types'
 
 import RegisterModal from './auth/RegisterModal';
 import LoginModal from './auth/LoginModal';
+import LessonModal from './LessonModal'
 
 import Logout from './auth/Logout';
 
@@ -54,42 +55,47 @@ class AppNavbar extends Component {
                     <RegisterModal />
                 </NavItem>
                 <NavItem>
-                    <LoginModal />
+                    <LoginModal  title="Login"/>
                 </NavItem>
             </Fragment>
         )
 
+        const authLessonLinks = (
+            <Fragment>
+                <NavItem>
+                    <LessonModal />
+                </NavItem>
+            </Fragment>
+        )
+
+
         return (
             <Container fluid className="p-0">
                 <Navbar color="dark" dark expand="sm" className="">
-                <Container>
-                    <NavbarBrand href="/">GKnowledge</NavbarBrand>
-                    <NavbarToggler onClick={this.toggle} />
-                    <Collapse isOpen={this.state.isOpen} navbar>
+                    <Container>
+                        <NavbarBrand href="/">GKnowledge</NavbarBrand>
+                        <NavbarToggler onClick={this.toggle} />
+                        <Collapse isOpen={this.state.isOpen} navbar>
 
-                        <Nav className="mx-auto" navbar>
-                            <NavItem>
-                                <NavLink href="#">
-                                    Buscar Flash Cards
+                            <Nav className="mx-auto" navbar>
+
+                                <NavItem>
+                                    <NavLink href="#">
+                                        Buscar Flash Cards
                                     </NavLink>
-                            </NavItem>
+                                </NavItem>
+                                {isAuthenticated ? authLessonLinks : <LoginModal title="Crear Clase"/>}                                
+                            </Nav>
 
-                            <NavItem>
-                                <NavLink href="#">
-                                    Crear Flash Cards
-                                    </NavLink>
-                            </NavItem>
-                        </Nav>
-
-                        <Nav className="ml-auto" navbar>
-                            {isAuthenticated ? authLinks : guestLinks}
-                        </Nav>
-                    </Collapse>
-                </Container>
-            </Navbar>
+                            <Nav className="ml-auto" navbar>
+                                {isAuthenticated ? authLinks : guestLinks}
+                            </Nav>
+                        </Collapse>
+                    </Container>
+                </Navbar>
 
             </Container>
-            
+
         )
     }
 }

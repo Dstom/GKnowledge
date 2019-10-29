@@ -24,20 +24,20 @@ lessonsController.getMyLessons = async (req, res) => {
 
 /**
  * Crear una nueva clase 
+ * @route POST /api/lessons
  * @param name nombre de la clase
  * @param owner usuario creador de la clase
  * @param categorie categoria a la cual pertenece esta clase
  */
 lessonsController.createLesson = async (req, res) => {
-    const { name, owner, categorie } = req.body;
-    const newNote = new Lesson({
+    const { name, owner } = req.body;
+    const newLesson = new Lesson({
         name,
-        owner,
-        categorie
+        owner        
     });
     
-    await newNote.save();
-    res.json({message: 'Note Saved'});   
+    await newLesson.save();
+    res.json(newLesson);   
 }
 
 lessonsController.getLesson = async (req, res) =>{ 

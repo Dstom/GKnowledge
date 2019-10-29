@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom'
 import {
     Button,
     Modal,
@@ -80,17 +81,20 @@ class LoginModal extends Component {
         // if authenticated, close modal
 
         if(this.state.modal){
-            if( isAuthenticated){
-                this.toggle();
+            if(isAuthenticated){
+                this.props.history.push("dashboard");               
+                this.toggle();  
             }
         }
+
+
     }
 
     render() {
         return (
             <div>
                 <NavLink onClick={this.toggle} href="#">
-                    Login
+                    {this.props.title}
                 </NavLink>
 
                 <Modal
@@ -123,8 +127,6 @@ class LoginModal extends Component {
                                     placeholder="Password"
                                     onChange={this.onInputChange}
                                 />
-
-
                             </FormGroup>
 
                             <Button

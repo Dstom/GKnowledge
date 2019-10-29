@@ -3,9 +3,12 @@ const router = Router();
 
 const {getLessons, createLesson, getLesson, deleteLesson, updateLesson} = require('../controllers/lessons.controller');
 
+const auth = require('../middlewares/auth');
+
+
 router.route('/')
     .get(getLessons)
-    .post(createLesson);
+    .post(auth, createLesson);
 
 router.route('/:id')
     .delete(deleteLesson)

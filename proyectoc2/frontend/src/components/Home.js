@@ -1,6 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 import { Jumbotron, Container, Row, Col } from 'reactstrap'
+
+import AppNavbar from "./AppNavbar";
+import Footer from './Footer'
 
 import appcss from '../App.css'; 
 
@@ -9,6 +12,8 @@ export default class Home extends Component {
     render() {        
 
         return (
+            <Fragment>
+            <AppNavbar />
             <div>
                 <Jumbotron fluid>
                     <Container fluid>
@@ -27,6 +32,8 @@ export default class Home extends Component {
                 </Row>
 
             </div>
+            <Footer />
+            </Fragment>
         )
     }
 }

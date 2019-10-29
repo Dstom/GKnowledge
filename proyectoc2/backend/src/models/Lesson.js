@@ -5,8 +5,7 @@ const lessonSchema = new Schema({
     owner: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    },
-    categorie: {type: String, required: true}
+    }
 }, {
     timestamps: true
 });
