@@ -42,7 +42,10 @@ class DashboardSidebar extends Component {
                             </h4>
 
                             <div className="action-buttons">
-                                <div className="icon-button add-button" title="Crea tus propias flashcards"> <FontAwesomeIcon icon={faPlus} />
+                                <div className="icon-button add-button" title="Crea tus propias flashcards">
+
+                                    <LessonModal isNavLink={false} />
+                                   
                                 </div>
                                 <div className="icon-button search-button" title="Buscar otras flascards"><FontAwesomeIcon icon={faSearch} /></div>
                             </div>

@@ -63,7 +63,7 @@ class AppNavbar extends Component {
         const authLessonLinks = (
             <Fragment>
                 <NavItem>
-                    <LessonModal />
+                    <LessonModal isNavLink={true}/>
                 </NavItem>
             </Fragment>
         )

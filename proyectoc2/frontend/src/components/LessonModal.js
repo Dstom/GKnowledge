@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
     Button,
     Modal,
@@ -13,6 +13,9 @@ import {
 
 import { connect } from 'react-redux';
 import { addLesson } from '../actions/lessonActions';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons'
 
 import PropTypes from 'prop-types'
 
@@ -53,16 +56,20 @@ class LessonModal extends Component {
 
     render() {
         return (
-            <div>
-                <NavLink onClick={this.toggle} href="#">
-                    Crear Clase
-                </NavLink>
-
+            <Fragment>
+                {
+                    this.props.isNavLink ? 
+                    <NavLink onClick={this.toggle} href="#">
+                      Crear Clase
+                    </NavLink> :
+                    <FontAwesomeIcon icon={faPlus} onClick={this.toggle}/>                    
+                }
                 <Modal 
                 isOpen={this.state.modal}
                 toggle={this.toggle}
+                centered={true}
                 >
-                    <ModalHeader toggle={this.toggle}>Crear una nueva clase</ModalHeader>
+                    <ModalHeader style={{borderBottom: 0}} >Crear una nueva clase</ModalHeader>
                     <ModalBody>
                     <Form onSubmit={this.onSubmit}>
                     <FormGroup>
@@ -87,9 +94,8 @@ class LessonModal extends Component {
                     </Button>
                     </Form> 
                     </ModalBody>
-                </Modal>
-                
-            </div>
+                </Modal>                
+            </Fragment>
         )
     }
 }
