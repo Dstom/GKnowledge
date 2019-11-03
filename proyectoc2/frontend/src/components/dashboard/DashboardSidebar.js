@@ -1,17 +1,18 @@
-import React, { Component } from 'react'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons'
-
-import notasIcon from '../../images/notas.webp';
-import { Progress } from 'reactstrap';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 
-import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
 
-import LessonModal from '../LessonModal'
-import DashboardHeaderUser from './DashboardHeaderUser'
+
+import LessonModal from '../LessonModal';
+import DashboardHeaderUser from './DashboardHeaderUser';
+
+import {getMyLessons} from '../../actions/lessonActions';
+import MetadataLesson from './MetadataLesson'
+
 
 
 import './style.css';
@@ -19,26 +20,43 @@ import './style.css';
 class DashboardSidebar extends Component {
 
     static propTypes = {
-        auth: PropTypes.object.isRequired
+        auth: PropTypes.object.isRequired,
+        lesson: PropTypes.object.isRequired,
+        getMyLessons: PropTypes.func.isRequired
+
+    }    
+    async componentDidMount(){
+
+        const { user } = await this.props.auth;
+        console.log(user);
+        if(user)
+        {
+            console.log(user);    
+        }
+
+        
+        
+      //  this.props.getMyLessons();
+        
+        
     }
-
+    
     render() {
-        const { user } = this.props.auth;
 
+        const  userLessons  = this.props.lesson.myLessons;
+        const { user } = this.props.auth;
+        console.log("user in render",user);
         return (
             <div className="dashboard-sidebar">
                 
-                <DashboardHeaderUser/>
+               
 
-                {
-                    //USER CLASSES
-                }
                 <div className="sidebar-sections">
                     <section className="sidebar-section my-classes">
 
                         <header className="sidebar-section-header my-classes-header">
                             <h4 className="section-heading my-classes-heading">
-                                Mis Clases ()
+                                Mis Clases ( {userLessons ? userLessons.length : null} )
                             </h4>
 
                             <div className="action-buttons">
@@ -51,28 +69,13 @@ class DashboardSidebar extends Component {
                             </div>
                         </header>
 
-                        <ul className="user-packs">
-                            { // CLASE EN SIDEBAR
-                             }
-                            <li className="sidebar-pack">
-                                <div className="pack-icon">
-                                    <img className="pack-icon-image" src={notasIcon} />
-                                </div>
-
-                                <div className="name-and-metadata">
-                                    <div className="pack-name" title="Anatomy ">
-                                        CLase 1
-                                    </div>
-                                    <Progress value="25" />
-                                    <div className="simple-progress-bar">
-                                        <div className="base-bar">
-                                            <div className="value-bar"  style={{width: 0.134228 + '%'}}>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
+                        <ul className="user-packs">  
+                        {
+                            userLessons ? 
+                            userLessons.map(lesson => (
+                                <MetadataLesson name={lesson.name} key={lesson._id} />
+                            )) : null
+                        }                          
                         </ul>
 
                     </section>
@@ -82,10 +85,14 @@ class DashboardSidebar extends Component {
         )
     }
 }
-
-const mapStateToProps = state => ({
-    auth: state.auth
+// <DashboardHeaderUser/>
+const mapStateToProps = (state) => ({    
+    auth: state.auth,
+    lesson: state.lesson
 });
 
-export default connect(mapStateToProps, null)(DashboardSidebar);
+export default connect(
+    mapStateToProps,
+    { getMyLessons }
+    )(DashboardSidebar);
 

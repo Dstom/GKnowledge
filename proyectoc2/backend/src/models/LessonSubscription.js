@@ -1,8 +1,13 @@
 const { Schema, model } = require('mongoose');
 
 const lessonSubscriptionSchema = new Schema({
-    lessonId:{ type: String, required: true},
-    userId: {type: String, required: true}
+    lesson:{ 
+        type: Schema.Types.ObjectId,
+        ref: 'Lesson'},
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 }, {
     timestamps: true
 });

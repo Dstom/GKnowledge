@@ -1,13 +1,14 @@
 const lessonsController = {};
 
 const Lesson = require('../models/Lesson');
-const LessonSubscription = require('../models/LessonSubscription');
+const User = require('../models/User');
+//const LessonSubscription = require('../models/LessonSubscription');
 
 /**
  * 
  */
 lessonsController.getLessonsById = async (req, res) => {
-    const lessons = await Lesson.findById(req.params.id);
+    const lessons = await Lesson.findById(req.params.id).populate('user');
     res.json(lessons);
 }
 
@@ -18,8 +19,9 @@ lessonsController.getLessonsById = async (req, res) => {
  * @returns todas las clases suscritas pertenecientes al userId
  */
 lessonsController.getMyLessons = async (req, res) => {
-    const lessonsSubscribed = await LessonSubscription.findById(req.params.id);
-    res.json(lessonsSubscribed);
+
+    const myLessons = await User.findById(owner).populate('lessons', ['name']);
+    res.json(myLessons);
 }
 
 /**
@@ -29,15 +31,25 @@ lessonsController.getMyLessons = async (req, res) => {
  * @param owner usuario creador de la clase
  * @param categorie categoria a la cual pertenece esta clase
  */
-lessonsController.createLesson = async (req, res) => {
+lessonsController.createMyLesson = async (req, res) => {
+
     const { name, owner } = req.body;
     const newLesson = new Lesson({
         name,
         owner        
     });
-    
+
+    newLesson.users.push(owner);    
     await newLesson.save();
+
+    // Add lesson to User lessons
+    const userFinded = await User.findById(owner);
+    userFinded.lessons.push(newLesson._id);
+    await userFinded.save();
+
     res.json(newLesson);   
+
+
 }
 
 lessonsController.getLesson = async (req, res) =>{ 

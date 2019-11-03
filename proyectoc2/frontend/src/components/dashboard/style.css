@@ -99,7 +99,7 @@
 
 .dashboard-sidebar .sidebar-sections {
     height: calc(100vh);
-    overflow-y: hidden;
+    overflow-y: auto;
 }
 
 .dashboard-sidebar .sidebar-sections .sidebar-section {

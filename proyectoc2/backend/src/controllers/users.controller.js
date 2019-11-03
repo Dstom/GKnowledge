@@ -60,7 +60,13 @@ userController.registerUser = async (req, res) => {
 }
 
 /**
- * Update User
+ * @route PUT api/users/:id
+ * @desc Reegister new user
+ * @param user._id -> id del usuario para actualizar datos
+ * @param email -> email a actualizar 
+ * @param name -> name a actualizar
+ * @param lastname -> lastname a actualizar
+ * @access Private
  */
 userController.updateUser = async (req, res) => {
     const { email, name, lastname } = req.body;
@@ -69,6 +75,18 @@ userController.updateUser = async (req, res) => {
         name,
         lastname
     })
+}
+
+/**
+ * @route GET api/users/:id
+ * @route Obtener clases del usuario 
+ * @param user._id -> id del usuario para buscar información
+ */
+
+userController.getUser = async (req, res) => {
+    const userLessons = await User.findById(req.params.id)    
+    .select('lessons').populate('lessons', ['name']);    
+    res.json(userLessons.lessons);
 }
 
 module.exports = userController;

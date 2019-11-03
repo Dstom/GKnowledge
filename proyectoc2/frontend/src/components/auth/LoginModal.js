@@ -82,7 +82,6 @@ class LoginModal extends Component {
 
         if(this.state.modal){
             if(isAuthenticated){
-                this.props.history.push("dashboard");               
                 this.toggle();  
             }
         }

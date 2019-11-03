@@ -16,4 +16,5 @@ export const GET_LESSONS = 'GET_LESSONS';
 export const GET_LESSON = 'GET_LESSON';
 export const ADD_LESSON = 'ADD_LESSON';
 export const LESSONS_LOADING = 'LESSONS_LOADING';
+export const GET_MY_LESSONS = 'GET_MY_LESSONS';
 

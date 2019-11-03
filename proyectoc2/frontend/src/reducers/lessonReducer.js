@@ -1,9 +1,10 @@
-import { GET_LESSONS, ADD_LESSON, GET_LESSON, LESSONS_LOADING } 
+import { GET_LESSONS, ADD_LESSON, GET_LESSON, LESSONS_LOADING, GET_MY_LESSONS } 
 from '../actions/types';
 
 const initialState = {
     lessons: [],
-    loading: false
+    myLessons: [],
+    isLoading: false
 }
 
 export default function(state = initialState, action){
@@ -12,7 +13,13 @@ export default function(state = initialState, action){
             return{
                 ...state,
                 lessons: action.payload,
-                loading: false
+                isLoading: false
+            }
+        case GET_MY_LESSONS:
+            return{
+                ...state,
+                myLessons: action.payload,
+                isLoading: false
             }
        /* case DELETE_ITEM:
             return {
@@ -22,12 +29,12 @@ export default function(state = initialState, action){
         case ADD_LESSON:
             return{
                 ...state,
-                lessons: [action.payload, ...state.lessons]                
+                myLessons: [action.payload, ...state.myLessons]  
             }
         case LESSONS_LOADING:
             return{
                 ...state,
-                loading: true
+                isLoading: true
             }       
         default:
             return state;

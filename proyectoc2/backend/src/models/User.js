@@ -8,21 +8,15 @@ const userSchema = new Schema({
     password: {type: String, required: true},
     name: {type: String, required: true},
     lastname: {type: String, required: true},
-    register_date: { type: Date, default: Date.now}
+    register_date: { type: Date, default: Date.now},
+    //My lessons
+    // users 
+    lessons: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Lesson'
+  }]
   //  role: {type: String, required: true},
  //   state: {type:String, required: true, default: 1}   
 });
-
-//UserSchema.methods.encryptPassword = async (password) => {
-//    const salt = await bcrypt.genSalt(10);
-//    const hash = bcrypt.hash(password, salt);
- //   return hash;
-//};
-
-// comparar contraseñas en el logeo
-//UserSchema.methods.matchPassword = async function(password) {
-//    return await bcrypt.compare(password, this.password);
-//};
-
 //users collection
 module.exports =  model('User', userSchema);

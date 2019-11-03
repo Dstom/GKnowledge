@@ -5,13 +5,29 @@ import './style.css'
 import DashboardDetail from './DashboardDetail';
 import DashboardSidebar from './DashboardSidebar';
 
-export default class Dashboard extends Component {
+
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+class Dashboard extends Component {
+
+    static propTypes = {
+        isMain: PropTypes.bool
+    }       
     render() {
         return (
             <div className="dashboard-page">
                 <DashboardSidebar/>
-                <DashboardDetail/>
+                { !this.props.isMain ?
+                    <div className="dashboard-pack-detail">
+                        MAIN DASHBOARD
+                    </div>:
+                    <DashboardDetail/>
+                }
             </div>
         )
     }
 }
+
+export default Dashboard;
+

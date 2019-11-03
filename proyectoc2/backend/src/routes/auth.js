@@ -44,8 +44,9 @@ router.post('/', (req, res) => {
                     res.json({
                         token,
                         user:{
-                            id: user.id,
+                            _id: user._id,
                             name: user.name,
+                            lastname: user.lastname,
                             email: user.email
                         }
                     });
@@ -58,13 +59,18 @@ router.post('/', (req, res) => {
 
 /**
  * @route GET api/auth/user
- * @desc Get User data
+ * @desc obtenemos la información del usuario logeado
  * @access Private
  */
-router.get('/user', auth, (req, res) => {
-    User.findById(req.user.id)
-    .select('-password')
-    .then(user => res.json(user));
+router.get('/user', auth, async (req, res) => {
+    
+   /* User.findById(req.user.id)
+    .select(['-password','-lessons'])
+    .then(user => res.json(user));*/
+    const user = await User.findById(req.user.id).select(['_id','name','lastname','email']);
+    res.json(user)
+    console.log(user);
+    
 })
     
 module.exports = router;

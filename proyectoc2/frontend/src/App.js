@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 
-import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 
 
 import store from './store';
@@ -28,9 +28,9 @@ import Dashboard from './components/dashboard/Dashboard'
 
 class App extends Component {
 
-  static propTypes = {
+ /* static propTypes = {
     auth: PropTypes.object.isRequired
-  }
+  }*/
 
   componentDidMount() {
     store.dispatch(loadUser());
@@ -38,22 +38,26 @@ class App extends Component {
 
   render() {
 
-    const { isAuthenticated } = this.props.auth;
+    //const { isAuthenticated } = this.props.auth;
 
     return (
-    
+      <Provider store={store}>
+
         <Router>
-          <Route path="/" exact> 
-            {isAuthenticated ? <Redirect to="/dashboard" /> : <Home />}
-          </Route>
-          <Route path="/dashboard" component={Dashboard} />   
+          <Route path="/test" component={Footer} />
+          <Route path="/dashboard/:id/decks"  component={Dashboard} isMain={false} />
+          <Route path="/dashboard" component={Dashboard} isMain={true} /> 
+          <Route path="/" exact component={Home} />   
         </Router>
+      </Provider>
     );
   }
 }
 /* 
   <Route path="/" exact component={Home} />     
-
+  <Route path="/" exact> 
+            {isAuthenticated ? <Redirect to="/dashboard" isMain={true}/> : <Home />}
+          </Route>
 <Route path="/edit/:id" component={CreateNote} />
           <Route path="/create" component={CreateNote} />
           <Route path="/user" component={CreateUser} />
@@ -61,10 +65,10 @@ class App extends Component {
 
 
 
-const mapStateToProps = state => ({
+/*const mapStateToProps = state => ({
   auth: state.auth
 });
 
 export default connect(mapStateToProps)(App);
-
-//export default App;
+*/
+export default App;
