@@ -2,6 +2,7 @@ const lessonsController = {};
 
 const Lesson = require('../models/Lesson');
 const User = require('../models/User');
+const Deck = require('../models/Deck');
 //const LessonSubscription = require('../models/LessonSubscription');
 
 /**
@@ -29,7 +30,6 @@ lessonsController.getMyLessons = async (req, res) => {
  * @route POST /api/lessons
  * @param name nombre de la clase
  * @param owner usuario creador de la clase
- * @param categorie categoria a la cual pertenece esta clase
  */
 lessonsController.createMyLesson = async (req, res) => {
 
@@ -51,11 +51,15 @@ lessonsController.createMyLesson = async (req, res) => {
 
 
 }
-
-lessonsController.getLesson = async (req, res) =>{ 
-    const note = await Note.findById(req.params.id);
-    console.log(note);
-    res.json(note);
+/**
+ * Obtener clase por id
+ * @route GET /api/lessons/:id
+ * @param id lesson._id de la clase
+ */
+lessonsController.getMyLesson = async (req, res) =>{ 
+    const lesson = await Lesson.findById(req.params.id).populate('owner', ['name', 'lastname']);
+    console.log("my Lesson: ", lesson);
+    res.json(lesson);
 };
 
 lessonsController.getLessons = async (req, res) => {
@@ -76,6 +80,32 @@ lessonsController.updateLesson = async (req, res) => {
 lessonsController.deleteLesson = async (req, res) => {
     await Note.findByIdAndDelete(req.params.id);
     res.json("Lesson Deleted");
+}
+/**
+ * @route POST /api/lessons/:id/decks
+ * @param _id relacion de deck con una clase
+ * @param name nombre de la deck
+ * @param objective objetivo de la deck
+ */
+
+lessonsController.addDeck = async (req, res) => {
+
+    const { name, objective } = req.body;
+
+    const newDeck = new Deck({
+        name,
+        objective
+    });
+
+    newDeck.save();
+
+    // agregamos la deck a la clase indicada
+    const lessonFinded = await Lesson.findById(req.params.id);
+    lessonFinded.decks.push(newDeck._id);
+    await lessonFinded.save();
+
+    res.json(newDeck);
+
 }
 
 module.exports = lessonsController;

@@ -3,30 +3,32 @@ import './style.css';
 
 import notasIcon from '../../images/notas.webp';
 import { Progress } from 'reactstrap';
+import PropTypes from 'prop-types';
 
-import { NavLink} from 'react-router-dom'
-
+import { Link } from 'react-router-dom'
 
 export default class metadataLesson extends Component {
+
+    static propTypes = {
+        lesson: PropTypes.object.isRequired
+    }
     render() {
+        const { lesson } = this.props;
         return (
-            <Fragment>
+            <Fragment>                
                 <li className="sidebar-pack">
                     <div className="pack-icon">
                         <img className="pack-icon-image" src={notasIcon} />
-                    </div>
+                    </div> 
 
                     <div className="name-and-metadata">
-                        <div className="pack-name" title={this.props.name}>
-                            {this.props.name}
+                        <div className="pack-name" title={lesson.name}>
+                            <Link to={"/dashboard/"+ lesson._id+"/decks"}>
+                            {lesson.name}
+                            </Link>
+                            {lesson.name}
                         </div>
-                        <Progress value="25" />
-                        <div className="simple-progress-bar">
-                            <div className="base-bar">
-                                <div className="value-bar" style={{ width: 0.134228 + '%' }}>
-                                </div>
-                            </div>
-                        </div>
+                        <Progress value="25" />                       
                     </div>
                 </li>
             </Fragment>

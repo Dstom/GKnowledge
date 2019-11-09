@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react'
+import { Link } from 'react-router-dom';
 import {
     Button,
     Modal,
@@ -12,7 +13,7 @@ import {
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { addLesson } from '../actions/lessonActions';
+import { addDeck } from '../actions/myLessonActions';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -23,7 +24,8 @@ class LessonModal extends Component {
 
     state = {
         modal: false,
-        name: ''
+        name: '',
+        objective: ''
     }
 
     toggle = () => {
@@ -45,12 +47,13 @@ class LessonModal extends Component {
     onSubmit = (e) => {
         e.preventDefault();
 
-        const newLesson = {            
+        const newDeck = {            
             name: this.state.name,
-            owner: this.props.auth.user._id
+            objective: this.state.objective,
+            lesson: this.props.auth.user._id
         }
-        console.log(newLesson);
-        this.props.addLesson(newLesson);
+        console.log(newDeck);
+        this.props.addDeck(newLesson);
         this.toggle();
     }
 
@@ -58,11 +61,9 @@ class LessonModal extends Component {
         return (
             <Fragment>
                 {
-                    this.props.isNavLink ? 
-                    <NavLink onClick={this.toggle} href="#">
-                      Crear Clase
-                    </NavLink> :
-                    <FontAwesomeIcon icon={faPlus} onClick={this.toggle}/>                    
+                    <Link onClick={this.toggle} href="#">
+                      Crear un Nuevo Deck
+                    </Link> 
                 }
                 <Modal 
                 isOpen={this.state.modal}
@@ -107,5 +108,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, 
-    {addLesson})(LessonModal);
+    {addDeck})(LessonModal);
 

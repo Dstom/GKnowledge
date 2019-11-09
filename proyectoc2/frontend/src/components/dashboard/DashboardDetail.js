@@ -1,30 +1,60 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { withRouter, Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisH, faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { Button } from 'reactstrap'
 
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import './style.css';
 import notasIcon from '../../images/notas.webp';
 
+import {getMyLesson} from '../../actions/myLessonActions'
 
-export default class DashboardDetail extends Component {
+import DashboardDeck from './DashboardDeck'
+
+
+class DashboardDetail extends Component {
+
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+        mylesson: PropTypes.object.isRequired
+    }
+
+      componentDidMount(){    
+        this.props.getMyLesson(this.props.match.params.id);
+        console.log("lesson id :",this.props.match.params.id);
+
+      }
+      componentDidUpdate(prevProps){
+        if(this.props.match.params !== prevProps.match.params)
+        {
+            this.props.getMyLesson(this.props.match.params.id);
+            console.log("lesson id :",this.props.match.params.id);
+        }
+      }
+   
+
     render() {
+
+        const {myLesson} = this.props.mylesson;
+        const fullName = myLesson ? myLesson.owner.name + " " + myLesson.owner.lastname : null;
         return (
             <div className="dashboard-pack-detail">
                 <header className="dashboard-pack-detail-header">
                     <div className="first-row">
                         <div className="pack-icon">
-                            <img className="pack-icon-image" src={notasIcon} />
+                            <img className="pack-icon-image" src={notasIcon} alt="notes_icon" />
                         </div>
 
                         <div className="pack-header-main">
-                            <h1 className="pack-name" title={"Clase"}>Clase</h1>
+                            <h1 className="pack-name" title={myLesson ? myLesson.name : null }>{ myLesson ? myLesson.name : null} </h1>
                             <div className="pack-metadata">
                                 <div className="pack-creator">
-                                    Creador: <a className="creator-profile-link" href={"LinkProp"}>Nombres Apellidos</a>
+                                    Creador: <a className="creator-profile-link" href={"LinkProp"}>{ myLesson ? fullName : null }</a>
                                 </div>
 
                                 <div className="user-pack-stats">
@@ -78,13 +108,38 @@ export default class DashboardDetail extends Component {
 
                 <div className="detail-sections">
                     <section className="pack-decks-section" id="primary-nav">
-                        <div className="pack-no-deck-info">
-                            <h2 className="deck-name">Esta clase no tiene barajas para practicar</h2>
-                            <Button color="warning">Crear Baraja</Button>
-                        </div>
+
+                        
+                        {myLesson  ?
+                            1 > 0 ?
+                            <Fragment>
+                            <div className="dashboard-pack-deck-list-heeader">
+                                <div className="pack-actions">
+                                    <Link to="/">
+                                        Crear Deck
+                                    </Link>
+                                </div>
+                            </div>
+                            <ul className="deck-list">
+                                <DashboardDeck/>
+                            </ul> 
+                            </Fragment>:
+                            <div className="pack-no-deck-info">
+                                <h2 className="deck-name">Esta clase no tiene barajas para practicar</h2>
+                                <Button color="warning">Crear Baraja</Button>
+                            </div>
+                            : null                            
+                        }                        
                     </section>
                 </div>
             </div>
         )
     }
 }
+const mapStateToProps = (state) => ({    
+    auth: state.auth,
+    mylesson: state.mylesson
+});
+
+
+export default withRouter(connect(mapStateToProps, {getMyLesson})(DashboardDetail))

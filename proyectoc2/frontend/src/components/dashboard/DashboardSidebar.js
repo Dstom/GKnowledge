@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -10,7 +9,7 @@ import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
 import LessonModal from '../LessonModal';
 import DashboardHeaderUser from './DashboardHeaderUser';
 
-import {getMyLessons} from '../../actions/lessonActions';
+import {getMyLessons} from '../../actions/myLessonActions';
 import MetadataLesson from './MetadataLesson'
 
 
@@ -21,35 +20,31 @@ class DashboardSidebar extends Component {
 
     static propTypes = {
         auth: PropTypes.object.isRequired,
-        lesson: PropTypes.object.isRequired,
+        mylesson: PropTypes.object.isRequired,
         getMyLessons: PropTypes.func.isRequired
 
-    }    
-    async componentDidMount(){
-
-        const { user } = await this.props.auth;
-        console.log(user);
-        if(user)
-        {
-            console.log(user);    
-        }
-
-        
-        
-      //  this.props.getMyLessons();
-        
-        
     }
-    
+    componentDidMount(){
+        if(this.props.auth.user){
+            this.props.getMyLessons(this.props.auth.user._id);
+        }
+    }  
+
+    componentDidUpdate(prevProps) {
+        const {user} = this.props.auth;
+        if(user && user !== prevProps.auth.user){
+          this.props.getMyLessons(user._id);
+        }
+      }
+   
     render() {
 
-        const  userLessons  = this.props.lesson.myLessons;
-        const { user } = this.props.auth;
-        console.log("user in render",user);
+        const  userLessons  = this.props.mylesson.myLessons;       
+
         return (
             <div className="dashboard-sidebar">
                 
-               
+                <DashboardHeaderUser/>
 
                 <div className="sidebar-sections">
                     <section className="sidebar-section my-classes">
@@ -73,7 +68,7 @@ class DashboardSidebar extends Component {
                         {
                             userLessons ? 
                             userLessons.map(lesson => (
-                                <MetadataLesson name={lesson.name} key={lesson._id} />
+                                <MetadataLesson lesson={lesson} key={lesson._id}  />
                             )) : null
                         }                          
                         </ul>
@@ -85,10 +80,10 @@ class DashboardSidebar extends Component {
         )
     }
 }
-// <DashboardHeaderUser/>
+// 
 const mapStateToProps = (state) => ({    
     auth: state.auth,
-    lesson: state.lesson
+    mylesson: state.mylesson
 });
 
 export default connect(

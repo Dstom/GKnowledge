@@ -17,14 +17,8 @@ class Logout extends Component {
                 <NavLink onClick={this.props.logout} href="#"> 
                 Logout
                 </NavLink>
-
             </Fragment>
         )
     }
 }
-
-
-
-export default connect(null,
-     {logout}) 
-     (Logout);
+export default connect(null,{logout})(Logout);

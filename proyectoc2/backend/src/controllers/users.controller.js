@@ -11,57 +11,57 @@ const jwt = require('jsonwebtoken');
  * @access Public
  */
 userController.registerUser = async (req, res) => {
-    const { name, lastname, email, password} = req.body;
+    const { name, lastname, email, password } = req.body;
 
-    if(!name || !lastname || !email || !password){
-        return res.status(400).json({msg: 'Porfavor ingrese todos los campos'});
+    if (!name || !lastname || !email || !password) {
+        return res.status(400).json({ msg: 'Porfavor ingrese todos los campos' });
     }
 
     User.findOne({ email })
-    .then(user => {
-        if(user) return res.status(400).json({msg: 'Este correo está en uso'});
+        .then(user => {
+            if (user) return res.status(400).json({ msg: 'Este correo está en uso' });
 
-        const newUser = new User({
-            name,
-            lastname,
-            email,
-            password
-        });
+            const newUser = new User({
+                name,
+                lastname,
+                email,
+                password
+            });
 
-        // Create salt & hash
-        bcrypt.genSalt(10, (err, salt) => {
-            bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if(err) throw err;
-                newUser.password = hash;
-                newUser.save()
-                .then(user => {
+            // Create salt & hash
+            bcrypt.genSalt(10, (err, salt) => {
+                bcrypt.hash(newUser.password, salt, (err, hash) => {
+                    if (err) throw err;
+                    newUser.password = hash;
+                    newUser.save()
+                        .then(user => {
 
-                    jwt.sign(
-                        { id: user.id },
-                        config.get('jwtSecret'),
-                        { expiresIn: 3600 },
-                        (err, token) => {
-                            if(err) throw err;
-                            res.json({
-                                token,
-                                user:{
-                                    id: user.id,
-                                    name: user.name,
-                                    email: user.email
+                            jwt.sign(
+                                { id: user.id },
+                                config.get('jwtSecret'),
+                                { expiresIn: 3600 },
+                                (err, token) => {
+                                    if (err) throw err;
+                                    res.json({
+                                        token,
+                                        user: {
+                                            _id: user._id,
+                                            name: user.name,
+                                            lastname: user.lastname,
+                                            email: user.email
+                                        }
+                                    });
                                 }
-                            });
-                        } 
-                    )
-                    
-                });
+                            )
+                        });
+                })
             })
         })
-    })
 }
 
 /**
  * @route PUT api/users/:id
- * @desc Reegister new user
+ * @desc Update user
  * @param user._id -> id del usuario para actualizar datos
  * @param email -> email a actualizar 
  * @param name -> name a actualizar
@@ -70,7 +70,7 @@ userController.registerUser = async (req, res) => {
  */
 userController.updateUser = async (req, res) => {
     const { email, name, lastname } = req.body;
-    await User.findOneAndUpdate({_id: req.params.id},{
+    await User.findOneAndUpdate({ _id: req.params.id }, {
         email,
         name,
         lastname
@@ -84,8 +84,8 @@ userController.updateUser = async (req, res) => {
  */
 
 userController.getUser = async (req, res) => {
-    const userLessons = await User.findById(req.params.id)    
-    .select('lessons').populate('lessons', ['name']);    
+    const userLessons = await User.findById(req.params.id)
+        .select('lessons').populate('lessons', ['name']);
     res.json(userLessons.lessons);
 }
 

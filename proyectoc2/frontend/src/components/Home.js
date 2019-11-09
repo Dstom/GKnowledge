@@ -6,6 +6,7 @@ import AppNavbar from "./AppNavbar";
 import Footer from './Footer'
 
 import appcss from '../App.css'; 
+import homeImage from '../images/home-image.png';
 
 
 export default class Home extends Component {
@@ -14,9 +15,8 @@ export default class Home extends Component {
         return (
             <Fragment>
             <AppNavbar />
-            <div>
-                <Jumbotron fluid>
-                    <Container fluid>
+                <Jumbotron fluid style={{ backgroundImage: `url(${homeImage})`, backgroundSize: 'cover' , minHeight: '500px', display:'flex' }}>
+                    <Container fluid className="my-auto">
                         <h1 className="display-3">Gathering Knowledge</h1>
                         <p className="lead">Aprende rápido</p>
                     </Container>
@@ -30,8 +30,6 @@ export default class Home extends Component {
                     asd
                     </Col>
                 </Row>
-
-            </div>
             <Footer />
             </Fragment>
         )

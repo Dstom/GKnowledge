@@ -1,36 +1,26 @@
 import React, { Component } from 'react';
-import { Provider } from 'react-redux';
 
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
-
 
 import store from './store';
 import { loadUser } from './actions/authActions';
 
-
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Container } from 'reactstrap';
-
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import './App.css';
 
-import AppNavbar from "./components/AppNavbar";
 import Home from './components/Home';
-import Footer from './components/Footer'
-import Dashboard from './components/dashboard/Dashboard'
-
-
+import Footer from './components/Footer';
+import Dashboard from './components/dashboard/Dashboard';
 
 class App extends Component {
 
- /* static propTypes = {
+  static propTypes = {
     auth: PropTypes.object.isRequired
-  }*/
+  }
 
   componentDidMount() {
     store.dispatch(loadUser());
@@ -38,26 +28,43 @@ class App extends Component {
 
   render() {
 
-    //const { isAuthenticated } = this.props.auth;
+    const { isAuthenticated } = this.props.auth;
 
     return (
-      <Provider store={store}>
 
         <Router>
+          <Switch>
           <Route path="/test" component={Footer} />
-          <Route path="/dashboard/:id/decks"  component={Dashboard} isMain={false} />
-          <Route path="/dashboard" component={Dashboard} isMain={true} /> 
-          <Route path="/" exact component={Home} />   
+
+          <Route path="/dashboard/:id/decks"
+            exact strict 
+            render={(props) => <Dashboard {...props} isMain={false} />}          
+          />      
+
+          <Route path="/dashboard"             
+            render={(props) => <Dashboard {...props} isMain={true} />}          
+          />     
+          <Route path="/" exact> 
+            {isAuthenticated ? 
+            <Redirect to={{
+              pathname: "/dashboard",
+              isMain: true
+            }}
+            /> :            
+            <Home />}
+          </Route> 
+
+          </Switch>
+         
         </Router>
-      </Provider>
     );
   }
 }
 /* 
+          <Route path="/dashboard" component={Dashboard} isMain />
+
   <Route path="/" exact component={Home} />     
-  <Route path="/" exact> 
-            {isAuthenticated ? <Redirect to="/dashboard" isMain={true}/> : <Home />}
-          </Route>
+
 <Route path="/edit/:id" component={CreateNote} />
           <Route path="/create" component={CreateNote} />
           <Route path="/user" component={CreateUser} />
@@ -65,10 +72,10 @@ class App extends Component {
 
 
 
-/*const mapStateToProps = state => ({
+const mapStateToProps = state => ({
   auth: state.auth
 });
 
 export default connect(mapStateToProps)(App);
-*/
-export default App;
+
+//export default App;

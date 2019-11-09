@@ -11,14 +11,21 @@ import PropTypes from 'prop-types';
 
 class Dashboard extends Component {
 
+    state = {
+        isMain: false
+    }
+
     static propTypes = {
         isMain: PropTypes.bool
     }       
     render() {
+        console.log(this.props.isMain);
+
         return (
             <div className="dashboard-page">
-                <DashboardSidebar/>
-                { !this.props.isMain ?
+                <DashboardSidebar />
+                { 
+                    this.props.isMain ?
                     <div className="dashboard-pack-detail">
                         MAIN DASHBOARD
                     </div>:

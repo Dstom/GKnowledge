@@ -11,6 +11,11 @@ const lessonSchema = new Schema({
     users: [{
         type: Schema.Types.ObjectId,
         ref: 'User'
+    }],
+    // decks
+    decks: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Deck'
     }]
 }, {
     timestamps: true

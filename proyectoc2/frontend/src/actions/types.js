@@ -14,7 +14,10 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
 export const GET_LESSONS = 'GET_LESSONS';
 export const GET_LESSON = 'GET_LESSON';
+export const GET_MY_LESSON = 'GET_MY_LESSON';
 export const ADD_LESSON = 'ADD_LESSON';
+export const ADD_DECK = 'ADD_DECK';
 export const LESSONS_LOADING = 'LESSONS_LOADING';
 export const GET_MY_LESSONS = 'GET_MY_LESSONS';
+export const MY_LESSONS_LOADING = 'MY_LESSONS_LOADING';
 

@@ -1,4 +1,4 @@
-import { GET_LESSONS, ADD_LESSON, GET_LESSON, LESSONS_LOADING, GET_MY_LESSONS }
+import { GET_LESSONS, ADD_LESSON, GET_LESSON, LESSONS_LOADING }
     from '../actions/types';
 
 import { tokenConfig } from './authActions';
@@ -18,20 +18,6 @@ export const addLesson = (lesson) => async (dispatch, getState) => {
         return err => dispatch(returnErrors(err.response.data, err.response.status))
     }
     
-}
-
-export const getMyLessons = (id) => async (dispatch, getState) => {
-
-    dispatch(setLessonsLoading());
-    try {
-        const res = await axios.get('http://localhost:4000/api/users/' + id, tokenConfig(getState));
-        return Promise.resolve(dispatch({
-            type: GET_MY_LESSONS,
-            payload: res.data
-        }));
-    } catch (err) {
-        return err => dispatch(returnErrors(err.response.data, err.response.status))
-    }
 }
 
 export const setLessonsLoading = () => {

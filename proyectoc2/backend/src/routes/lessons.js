@@ -1,7 +1,8 @@
 const { Router } = require('express');
 const router = Router();
 
-const {getLessons, createMyLesson, getLesson, deleteLesson, updateLesson, getMyLessons} = require('../controllers/lessons.controller');
+const {getLessons, createMyLesson, getMyLesson, deleteLesson, updateLesson, getMyLessons
+, addDeck} = require('../controllers/lessons.controller');
 
 const auth = require('../middlewares/auth');
 
@@ -14,6 +15,10 @@ router.route('/:id')
     .post(getMyLessons)
     .delete(deleteLesson)
     .put(updateLesson)
-    .get(getLesson);
+    .get(getMyLesson);
+
+router.route('/:id/decks')
+    .post(addDeck)
+
     
 module.exports = router;

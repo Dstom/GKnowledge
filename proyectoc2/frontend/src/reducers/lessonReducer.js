@@ -1,26 +1,19 @@
-import { GET_LESSONS, ADD_LESSON, GET_LESSON, LESSONS_LOADING, GET_MY_LESSONS } 
+import { GET_LESSONS, ADD_LESSON, LESSONS_LOADING } 
 from '../actions/types';
 
 const initialState = {
     lessons: [],
-    myLessons: [],
-    isLoading: false
+    isLoading: false,
 }
 
 export default function(state = initialState, action){
-    switch(action.type){
+    switch(action.type){        
         case GET_LESSONS:
             return{
                 ...state,
                 lessons: action.payload,
                 isLoading: false
-            }
-        case GET_MY_LESSONS:
-            return{
-                ...state,
-                myLessons: action.payload,
-                isLoading: false
-            }
+            }        
        /* case DELETE_ITEM:
             return {
                 ...state,

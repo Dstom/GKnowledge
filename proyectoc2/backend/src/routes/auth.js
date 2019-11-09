@@ -68,9 +68,7 @@ router.get('/user', auth, async (req, res) => {
     .select(['-password','-lessons'])
     .then(user => res.json(user));*/
     const user = await User.findById(req.user.id).select(['_id','name','lastname','email']);
-    res.json(user)
-    console.log(user);
-    
+    res.json(user);    
 })
     
 module.exports = router;
