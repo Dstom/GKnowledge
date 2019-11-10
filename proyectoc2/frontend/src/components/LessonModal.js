@@ -12,7 +12,7 @@ import {
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { addLesson } from '../actions/lessonActions';
+import { addMyLesson } from '../actions/myLessonActions';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
@@ -50,7 +50,7 @@ class LessonModal extends Component {
             owner: this.props.auth.user._id
         }
         console.log(newLesson);
-        this.props.addLesson(newLesson);
+        this.props.addMyLesson(newLesson);
         this.toggle();
     }
 
@@ -107,5 +107,5 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, 
-    {addLesson})(LessonModal);
+    {addMyLesson})(LessonModal);
 

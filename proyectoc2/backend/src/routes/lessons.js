@@ -18,7 +18,7 @@ router.route('/:id')
     .get(getMyLesson);
 
 router.route('/:id/decks')
-    .post(addDeck)
+    .post(auth, addDeck)
 
     
 module.exports = router;

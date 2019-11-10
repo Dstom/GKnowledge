@@ -13,14 +13,11 @@ import {
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { addDeck } from '../actions/myLessonActions';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
+import { addMyDeck } from '../actions/myLessonActions';
 
 import PropTypes from 'prop-types'
 
-class LessonModal extends Component {
+class DeckModal extends Component {
 
     state = {
         modal: false,
@@ -46,40 +43,39 @@ class LessonModal extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-
+        const lessonId = this.props.mylesson.myLesson._id;
         const newDeck = {            
             name: this.state.name,
             objective: this.state.objective,
-            lesson: this.props.auth.user._id
+            lesson: this.props.mylesson.myLesson._id
         }
-        console.log(newDeck);
-        this.props.addDeck(newLesson);
+        console.log('New Deck: ', newDeck);
+        this.props.addMyDeck(lessonId, newDeck);
         this.toggle();
     }
 
     render() {
         return (
             <Fragment>
-                {
-                    <Link onClick={this.toggle} href="#">
-                      Crear un Nuevo Deck
-                    </Link> 
-                }
+                <Link onClick={this.toggle} to="#">
+                    Crear un Nuevo Deck
+                </Link> 
+                
                 <Modal 
                 isOpen={this.state.modal}
                 toggle={this.toggle}
                 centered={true}
                 >
-                    <ModalHeader style={{borderBottom: 0}} >Crear una nueva clase</ModalHeader>
+                    <ModalHeader style={{borderBottom: 0}} >Crear un nuevo Deck</ModalHeader>
                     <ModalBody>
                     <Form onSubmit={this.onSubmit}>
                     <FormGroup>
-                        <Label for="name">Nombre de la clase</Label>
+                        <Label for="name">Nombre del Deck</Label>
                         <Input 
                          type="text"
                          name="name"
                          id="name"
-                         placeholder="Crear Clase"
+                         placeholder="Deck"
                          onChange={this.onInputChange}
                         />
                     </FormGroup>
@@ -103,10 +99,10 @@ class LessonModal extends Component {
 
 
 const mapStateToProps = (state) => ({
-    lesson: state.lesson,
-    auth: state.auth
+    auth: state.auth,
+    mylesson: state.mylesson
 });
 
 export default connect(mapStateToProps, 
-    {addDeck})(LessonModal);
+    {addMyDeck})(DeckModal);
 

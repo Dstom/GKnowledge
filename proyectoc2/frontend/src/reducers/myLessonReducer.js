@@ -1,4 +1,4 @@
-import {  GET_MY_LESSON, MY_LESSONS_LOADING, GET_MY_LESSONS, ADD_DECK } 
+import {  GET_MY_LESSON, MY_LESSONS_LOADING, GET_MY_LESSONS, ADD_MY_DECK, ADD_MY_LESSON } 
 from '../actions/types';
 
 const initialState = {
@@ -26,10 +26,15 @@ export default function(state = initialState, action){
                 ...state,
                 isLoading: true
             }
-        case ADD_DECK:
+        case ADD_MY_DECK:
             return{
                 ...state
-            }       
+            }
+        case ADD_MY_LESSON:
+            return{
+                ...state,
+                myLessons: [action.payload, ...state.myLessons] 
+            }          
         default:
             return state;
     }

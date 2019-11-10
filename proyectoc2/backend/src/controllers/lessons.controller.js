@@ -90,13 +90,14 @@ lessonsController.deleteLesson = async (req, res) => {
 
 lessonsController.addDeck = async (req, res) => {
 
+    
     const { name, objective } = req.body;
 
     const newDeck = new Deck({
         name,
         objective
     });
-
+    console.log('mew DEck backend', newDeck);
     newDeck.save();
 
     // agregamos la deck a la clase indicada

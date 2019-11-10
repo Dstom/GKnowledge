@@ -1,4 +1,4 @@
-import { MY_LESSONS_LOADING, GET_MY_LESSONS, GET_MY_LESSON, ADD_DECK }
+import { MY_LESSONS_LOADING, GET_MY_LESSONS, GET_MY_LESSON, ADD_MY_DECK, ADD_MY_LESSON }
     from '../actions/types';
 
 import { tokenConfig } from './authActions';
@@ -34,11 +34,25 @@ export const getMyLesson = (id) => async (dispatch, getState) => {
     }
 }
 
-export const addDeck = (id, deck) => async (dispatch, getState) => {
+export const addMyLesson = (lesson) => async (dispatch, getState) => {
+    try {
+        const res = await axios.post('http://localhost:4000/api/lessons', lesson, tokenConfig(getState));
+        return Promise.resolve(dispatch({
+            type: ADD_MY_LESSON,
+            payload: res.data
+        }));
+
+    }catch(err){
+        return err => dispatch(returnErrors(err.response.data, err.response.status))
+    }
+    
+}
+
+export const addMyDeck = (id, deck) => async (dispatch, getState) => {
     try {
         const res = await axios.post('http://localhost:4000/api/lessons/' + id +'/decks', deck, tokenConfig(getState));
         return Promise.resolve(dispatch({
-            type: ADD_DECK,
+            type: ADD_MY_DECK,
             payload: res.data
         }));
 

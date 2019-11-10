@@ -6,19 +6,6 @@ import { returnErrors } from './errorActions';
 
 import axios from 'axios';
 
-export const addLesson = (lesson) => async (dispatch, getState) => {
-    try {
-        const res = await axios.post('http://localhost:4000/api/lessons', lesson, tokenConfig(getState));
-        return Promise.resolve(dispatch({
-            type: ADD_LESSON,
-            payload: res.data
-        }));
-
-    }catch(err){
-        return err => dispatch(returnErrors(err.response.data, err.response.status))
-    }
-    
-}
 
 export const setLessonsLoading = () => {
     return {

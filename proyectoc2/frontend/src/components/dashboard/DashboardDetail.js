@@ -14,7 +14,8 @@ import notasIcon from '../../images/notas.webp';
 
 import {getMyLesson} from '../../actions/myLessonActions'
 
-import DashboardDeck from './DashboardDeck'
+import DashboardDeck from './DashboardDeck';
+import DeckModal from '../DeckModal';
 
 
 class DashboardDetail extends Component {
@@ -111,13 +112,11 @@ class DashboardDetail extends Component {
 
                         
                         {myLesson  ?
-                            1 > 0 ?
+                            myLesson.decks > 0 ?
                             <Fragment>
                             <div className="dashboard-pack-deck-list-heeader">
                                 <div className="pack-actions">
-                                    <Link to="/">
-                                        Crear Deck
-                                    </Link>
+                                    <DeckModal/>
                                 </div>
                             </div>
                             <ul className="deck-list">
@@ -126,7 +125,8 @@ class DashboardDetail extends Component {
                             </Fragment>:
                             <div className="pack-no-deck-info">
                                 <h2 className="deck-name">Esta clase no tiene barajas para practicar</h2>
-                                <Button color="warning">Crear Baraja</Button>
+                                <Button color="warning" >Crear Baraja</Button>
+                                    <DeckModal/>
                             </div>
                             : null                            
                         }                        
