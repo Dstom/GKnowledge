@@ -24,3 +24,9 @@ export const LESSONS_LOADING = 'LESSONS_LOADING';
 export const GET_MY_LESSONS = 'GET_MY_LESSONS';
 export const MY_LESSONS_LOADING = 'MY_LESSONS_LOADING';
 
+/* types for decks */
+export const GET_MY_DECK = 'GET_MY_DECK';
+export const ADD_MY_FLASHCARD = 'ADD_MY_FLASHCARD';
+export const EDIT_MY_FLASHCARD = 'EDIT_MY_FLASHCARD';
+export const DELETE_MY_FLASHCARD = 'DELETE_MY_FLASHCARD';
+export const MY_DECK_LOADING = 'MY_DECK_LOADING';

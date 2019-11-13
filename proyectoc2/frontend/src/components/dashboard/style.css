@@ -494,3 +494,37 @@
 .dashboard-deck-row .deck-row-contents .deck-info .simple-progress-bar {
     margin-top: 6px;
 }
+
+.pack-decks-section .dashboard-pack-deck-list-header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 36px 42px 12px;
+    border-bottom: 1px solid #ccc;
+}
+.dashboard-deck-row .deck-row-contents .deck-actions {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    margin-left: auto;
+    padding: 0;
+}
+
+.dashboard-deck-actions-button-set, .dashboard-deck-actions-button-set .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dashboard-deck-row .deck-row-contents .deck-actions .icon-button.browse-button {
+    font-size: 18px;
+}
+.dashboard-deck-row .deck-row-contents .deck-actions .icon-button.edit-button {
+    font-size: 18px;
+}
+.dashboard-deck-row .deck-row-contents .deck-actions .icon-button.option-button {
+    font-size: 18px;
+}
+.dashboard-deck-row .deck-row-contents .deck-actions .icon-button.study-button {
+    font-size: 18px;
+}
+

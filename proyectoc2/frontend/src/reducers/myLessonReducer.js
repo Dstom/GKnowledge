@@ -13,7 +13,7 @@ export default function(state = initialState, action){
             return{
                 ...state,
                 myLesson: action.payload,
-                isLoadin: false
+                isLoading: false
             }        
         case GET_MY_LESSONS:
             return{
@@ -28,7 +28,11 @@ export default function(state = initialState, action){
             }
         case ADD_MY_DECK:
             return{
-                ...state
+                ...state,
+                myLesson:{
+                    ...state.myLesson,
+                    decks: [action.payload, ...state.myLesson.decks]
+                }
             }
         case ADD_MY_LESSON:
             return{

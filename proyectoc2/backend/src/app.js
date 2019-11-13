@@ -17,7 +17,8 @@ app.use(express.json());
 // routes
 //app.get
 app.use('/api/lessons', require('./routes/lessons'));
-app.use('/api/users', require('./routes/users'))
+app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/decks', require('./routes/decks'));
 
 module.exports = app;

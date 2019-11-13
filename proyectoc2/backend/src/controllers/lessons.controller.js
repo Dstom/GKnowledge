@@ -57,7 +57,9 @@ lessonsController.createMyLesson = async (req, res) => {
  * @param id lesson._id de la clase
  */
 lessonsController.getMyLesson = async (req, res) =>{ 
-    const lesson = await Lesson.findById(req.params.id).populate('owner', ['name', 'lastname']);
+    const lesson = await Lesson.findById(req.params.id)
+    .populate('owner', ['name', 'lastname'])
+    .populate('decks',['name', 'objective', 'flashcards']);
     console.log("my Lesson: ", lesson);
     res.json(lesson);
 };
@@ -89,15 +91,14 @@ lessonsController.deleteLesson = async (req, res) => {
  */
 
 lessonsController.addDeck = async (req, res) => {
-
     
     const { name, objective } = req.body;
-
+    const lessonId = req.params.id;
     const newDeck = new Deck({
         name,
-        objective
+        objective,
+        lesson: lessonId
     });
-    console.log('mew DEck backend', newDeck);
     newDeck.save();
 
     // agregamos la deck a la clase indicada

@@ -1,9 +1,14 @@
 const  { Schema, model } = require('mongoose');
 
-const flashCardSchema = new Schema({
+const flashcardSchema = new Schema({
     question: { type: String, required: true, trim: true },
-    answer: {type: String, required: true, trim: true}    
+    answer: {type: String, required: true, trim: true},
+    //deck
+    deck: {
+        type: Schema.Types.ObjectId,
+        ref: 'Deck'
+    }    
 });
 
 
-module.exports =  model('FlashCard', flashCardSchema);
+module.exports =  model('Flashcard', flashcardSchema);

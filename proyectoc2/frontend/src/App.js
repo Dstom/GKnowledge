@@ -13,8 +13,8 @@ import { connect } from 'react-redux';
 import './App.css';
 
 import Home from './components/Home';
-import Footer from './components/Footer';
 import Dashboard from './components/dashboard/Dashboard';
+import DeckFlashcards from './components/DeckFlashcards';
 
 class App extends Component {
 
@@ -34,7 +34,8 @@ class App extends Component {
 
         <Router>
           <Switch>
-          <Route path="/test" component={Footer} />
+
+          <Route path="/decks/:id/cards" exact strict component={DeckFlashcards} />
 
           <Route path="/dashboard/:id/decks"
             exact strict 

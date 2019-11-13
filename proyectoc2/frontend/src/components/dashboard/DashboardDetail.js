@@ -12,7 +12,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import notasIcon from '../../images/notas.webp';
 
-import {getMyLesson} from '../../actions/myLessonActions'
+import { getMyLesson } from '../../actions/myLessonActions'
 
 import DashboardDeck from './DashboardDeck';
 import DeckModal from '../DeckModal';
@@ -25,23 +25,20 @@ class DashboardDetail extends Component {
         mylesson: PropTypes.object.isRequired
     }
 
-      componentDidMount(){    
+    componentDidMount() {
         this.props.getMyLesson(this.props.match.params.id);
-        console.log("lesson id :",this.props.match.params.id);
-
-      }
-      componentDidUpdate(prevProps){
-        if(this.props.match.params !== prevProps.match.params)
-        {
+    }
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params !== prevProps.match.params) {
             this.props.getMyLesson(this.props.match.params.id);
-            console.log("lesson id :",this.props.match.params.id);
         }
-      }
-   
+    }
+
 
     render() {
 
-        const {myLesson} = this.props.mylesson;
+        const { myLesson } = this.props.mylesson;
+        console.log("My Lesson", myLesson)
         const fullName = myLesson ? myLesson.owner.name + " " + myLesson.owner.lastname : null;
         return (
             <div className="dashboard-pack-detail">
@@ -52,10 +49,10 @@ class DashboardDetail extends Component {
                         </div>
 
                         <div className="pack-header-main">
-                            <h1 className="pack-name" title={myLesson ? myLesson.name : null }>{ myLesson ? myLesson.name : null} </h1>
+                            <h1 className="pack-name" title={myLesson ? myLesson.name : null}>{myLesson ? myLesson.name : null} </h1>
                             <div className="pack-metadata">
                                 <div className="pack-creator">
-                                    Creador: <a className="creator-profile-link" href={"LinkProp"}>{ myLesson ? fullName : null }</a>
+                                    Creador: <a className="creator-profile-link" href={"LinkProp"}>{myLesson ? fullName : null}</a>
                                 </div>
 
                                 <div className="user-pack-stats">
@@ -63,7 +60,7 @@ class DashboardDetail extends Component {
                                     de
                                     <span className="stat-value">&nbsp;total&nbsp;</span>
                                     tarjetas estudiadas
-                                </div>                                
+                                </div>
                             </div>
 
                             <div className="pack-actions">
@@ -71,7 +68,7 @@ class DashboardDetail extends Component {
                                 <div className="edit-button-and-modal">
                                     <div className="icon-button edit-button">
 
-                                    <FontAwesomeIcon icon={faPencilAlt} />
+                                        <FontAwesomeIcon icon={faPencilAlt} />
 
                                     </div>
 
@@ -83,7 +80,7 @@ class DashboardDetail extends Component {
                                             <div className="icon-button options-button-horizontal">
                                                 <FontAwesomeIcon icon={faEllipsisH} />
                                             </div>
-                                           
+
                                         </div>
                                     </div>
                                 </div>
@@ -109,37 +106,40 @@ class DashboardDetail extends Component {
 
                 <div className="detail-sections">
                     <section className="pack-decks-section" id="primary-nav">
+                        {myLesson ?
+                            myLesson.decks.length > 0 ?
+                                <Fragment>
+                                    <div className="dashboard-pack-deck-list-header">
+                                        <div className="pack-actions">
+                                            <DeckModal />
+                                        </div>
+                                    </div>
+                                    <ul className="deck-list">
+                                        {
+                                            myLesson.decks.map(deck => (
+                                                <DashboardDeck deck={deck} key={deck._id} />
+                                            ))
+                                        }
 
-                        
-                        {myLesson  ?
-                            myLesson.decks > 0 ?
-                            <Fragment>
-                            <div className="dashboard-pack-deck-list-heeader">
-                                <div className="pack-actions">
-                                    <DeckModal/>
+                                    </ul>
+                                </Fragment> :
+                                <div className="pack-no-deck-info">
+                                    <h2 className="deck-name">Esta clase no tiene barajas para practicar</h2>
+                                    <Button color="warning" >Crear Baraja</Button>                                    
+                                    <DeckModal />
                                 </div>
-                            </div>
-                            <ul className="deck-list">
-                                <DashboardDeck/>
-                            </ul> 
-                            </Fragment>:
-                            <div className="pack-no-deck-info">
-                                <h2 className="deck-name">Esta clase no tiene barajas para practicar</h2>
-                                <Button color="warning" >Crear Baraja</Button>
-                                    <DeckModal/>
-                            </div>
-                            : null                            
-                        }                        
+                            : null
+                        }
                     </section>
                 </div>
             </div>
         )
     }
 }
-const mapStateToProps = (state) => ({    
+const mapStateToProps = (state) => ({
     auth: state.auth,
     mylesson: state.mylesson
 });
 
 
-export default withRouter(connect(mapStateToProps, {getMyLesson})(DashboardDetail))
+export default withRouter(connect(mapStateToProps, { getMyLesson })(DashboardDetail))
