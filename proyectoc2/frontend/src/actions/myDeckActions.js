@@ -20,9 +20,9 @@ export const getDeck = (id) => async (dispatch, getState) => {
     }
 }
 
-export const addMyDeck = (id, deck) => async (dispatch, getState) => {
+export const addMyFlashcard = (id, card) => async (dispatch, getState) => {
     try {
-        const res = await axios.post('http://localhost:4000/api/lessons/' + id +'/decks', deck, tokenConfig(getState));
+        const res = await axios.post('http://localhost:4000/api/decks/' + id +'/cards', card, tokenConfig(getState));
         return Promise.resolve(dispatch({
             type: ADD_MY_FLASHCARD,
             payload: res.data

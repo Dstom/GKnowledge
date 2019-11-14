@@ -13,12 +13,24 @@ export default function(state = initialState, action){
                 ...state,
                 deck: action.payload,
                 isLoading: false
+            }
+        case ADD_MY_FLASHCARD:
+            return{
+                ...state,
+                deck:{
+                    ...state.deck,
+                    flashcards: [action.payload, ...state.deck.flashcards]
+                }
             }        
-       /* case DELETE_ITEM:
+        case DELETE_MY_FLASHCARD:
             return {
                 ...state,
-                items: state.items.filter(item => item._id != action.payload)
-            }*/
+               // items: state.items.filter(item => item._id != action.payload),
+                deck:{
+                    ...state.deck,
+                    flashcards: state.deck.flashcards.filter(card => card._id != action.payload) 
+                }
+            }
         /*case ADD_LESSON:
             return{
                 ...state,

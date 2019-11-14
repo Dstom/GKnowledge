@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import {withRouter} from 'react-router-dom'
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
 
@@ -35,11 +37,11 @@ class DashboardSidebar extends Component {
         if(user && user !== prevProps.auth.user){
           this.props.getMyLessons(user._id);
         }
-      }
-   
+    }
+    
     render() {
 
-        const  userLessons  = this.props.mylesson.myLessons;       
+        const  userLessons  = this.props.mylesson.myLessons;            
 
         return (
             <div className="dashboard-sidebar">
@@ -86,8 +88,5 @@ const mapStateToProps = (state) => ({
     mylesson: state.mylesson
 });
 
-export default connect(
-    mapStateToProps,
-    { getMyLessons }
-    )(DashboardSidebar);
+export default withRouter(connect( mapStateToProps, { getMyLessons } )(DashboardSidebar));
 

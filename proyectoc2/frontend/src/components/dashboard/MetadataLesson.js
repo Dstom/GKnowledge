@@ -21,13 +21,10 @@ export default class metadataLesson extends Component {
                         <img className="pack-icon-image" src={notasIcon} />
                     </div> 
 
-                    <div className="name-and-metadata">
-                        <div className="pack-name" title={lesson.name}>
-                            <Link to={"/dashboard/"+ lesson._id+"/decks"}>
+                    <div className="name-and-metadata">                       
+                        <Link to={"/dashboard/"+ lesson._id+"/decks"} className="pack-name" title={lesson.name}>
                             {lesson.name}
-                            </Link>
-                            {lesson.name}
-                        </div>
+                        </Link>
                         <Progress value="25" />                       
                     </div>
                 </li>
