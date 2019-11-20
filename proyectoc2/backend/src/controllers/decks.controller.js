@@ -28,7 +28,6 @@ decksController.addFlashcard = async (req, res) => {
     await cardFinded.save();
 
     res.json(newFlashcard);
-
 }
 
 /**
