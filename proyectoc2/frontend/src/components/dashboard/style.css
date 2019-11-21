@@ -528,3 +528,30 @@
     font-size: 18px;
 }
 
+.preview-card, section.preview-card {
+    display: flex;
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: #484848;
+}
+
+.preview-card .card-header, section.preview-card .card-header {
+    display: flex;
+    align-items: center;
+}
+
+.preview-card .card-face, section.preview-card .card-face {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    min-width: 20vw;
+    margin: 4px;
+    padding: 44px;
+    background-color: #fff;
+    border-bottom: 5px solid #ccc;
+    box-shadow: 3px 3px 4px 0 hsla(0,0%,53%,.49);
+    width: calc((100% - 164px)/2);
+}

@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faPen, faEllipsisV, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import CardsPreviewModal from '../CardsPreviewModal'
 
 export default class DashboardDeck extends Component {
 
@@ -15,17 +16,17 @@ export default class DashboardDeck extends Component {
     }
     render() {
         const deck = this.props.deck;
-        console.log("deck.flashccards", deck.flashcards.length);
         return (
             <li className="dashboard-deck-row">
                 <ul className="deck-row-contents">
                     <li className="deck-mastery">
                         0%
                     </li>
+                     
                     <li className="deck-info">
                         <div className="deck-name-and-caption">
                             <h4 className="deck-name">{this.props.deck.name}</h4>
-                            <p className="deck-name-caption" >0 of total Cards studied </p>
+                            <p className="deck-name-caption">0 of total Cards studied</p>
                         </div>
 
                         <div className="simple-progress-bar">
@@ -39,11 +40,12 @@ export default class DashboardDeck extends Component {
                                 {deck.flashcards.length > 0 ?
                                     <Fragment>
                                         <div className="icon-button browse-button">
-                                            <FontAwesomeIcon icon={faEye} />
+                                        <CardsPreviewModal deckId={deck._id}/>
                                         </div>
                                         <div className="icon-button edit-button">
                                             <FontAwesomeIcon icon={faPen} />
                                         </div>
+                                        
                                     </Fragment>
                                     :
                                     <Link to={"/decks/" + deck._id + "/cards"} className="btn btn-success" style={{color:"#fff", marginLeft:"20px" }}>
