@@ -20,5 +20,6 @@ app.use('/api/lessons', require('./routes/lessons'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/decks', require('./routes/decks'));
+app.use('/api/studyflashcards', require('./routes/studyflashcards'))
 
 module.exports = app;

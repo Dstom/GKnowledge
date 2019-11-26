@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router'
 
 import { Progress } from 'reactstrap';
 import './style.css';
@@ -9,11 +10,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faPen, faEllipsisV, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import CardsPreviewModal from '../CardsPreviewModal'
 
-export default class DashboardDeck extends Component {
+class DashboardDeck extends Component {
 
     static propTypes = {
         deck: PropTypes.object.isRequired
     }
+
+    onEditDeck(id) {
+        this.props.history.push("/decks/" + id + "/cards");
+    }
+
     render() {
         const deck = this.props.deck;
         return (
@@ -22,7 +28,7 @@ export default class DashboardDeck extends Component {
                     <li className="deck-mastery">
                         0%
                     </li>
-                     
+
                     <li className="deck-info">
                         <div className="deck-name-and-caption">
                             <h4 className="deck-name">{this.props.deck.name}</h4>
@@ -40,24 +46,29 @@ export default class DashboardDeck extends Component {
                                 {deck.flashcards.length > 0 ?
                                     <Fragment>
                                         <div className="icon-button browse-button">
-                                        <CardsPreviewModal deckId={deck._id}/>
+                                            <CardsPreviewModal deckId={deck._id} />
                                         </div>
                                         <div className="icon-button edit-button">
-                                            <FontAwesomeIcon icon={faPen} />
+
+                                            <Link to={"/decks/" + deck._id + "/cards"} style={{ color: "#777" }}>
+                                                <FontAwesomeIcon icon={faPen} />
+                                            </Link>
                                         </div>
-                                        
+                                        <div className="icon-button option-button">
+                                            <FontAwesomeIcon icon={faEllipsisV} />
+                                        </div>
+                                        <div className="icon-button study-button">
+                                            <Link to={"/study/" + deck._id}  style={{ color: "#777", marginLeft: "20px" }}>
+                                                <FontAwesomeIcon icon={faChevronRight} />
+                                            </Link>
+                                        </div>
                                     </Fragment>
                                     :
-                                    <Link to={"/decks/" + deck._id + "/cards"} className="btn btn-success" style={{color:"#fff", marginLeft:"20px" }}>
+                                    <Link to={"/decks/" + deck._id + "/cards"} className="btn btn-success" style={{ color: "#fff", marginLeft: "20px" }}>
                                         Añadir Card
                                     </Link>
                                 }
-                                <div className="icon-button option-button">
-                                    <FontAwesomeIcon icon={faEllipsisV} />
-                                </div>
-                                <div className="icon-button study-button">
-                                    <FontAwesomeIcon icon={faChevronRight} />
-                                </div>
+
                             </div>
                         </div>
                     </li>
@@ -66,3 +77,4 @@ export default class DashboardDeck extends Component {
         )
     }
 }
+export default withRouter(DashboardDeck)

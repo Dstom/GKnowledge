@@ -57,7 +57,7 @@ class DeckFlashcards extends Component {
                                     deck ?
                                         deck.flashcards.length > 0 ?
                                             deck.flashcards.map(card => (
-                                                <tr>
+                                                <tr key={card._id}>
                                                     <th scope="row">{counter++}</th>
                                                     <td>{card.question}</td>
                                                     <td>{card.answer}</td>

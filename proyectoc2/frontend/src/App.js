@@ -15,6 +15,7 @@ import './App.css';
 import Home from './components/Home';
 import Dashboard from './components/dashboard/Dashboard';
 import DeckFlashcards from './components/DeckFlashcards';
+import StudyLesson from './components/StudyLesson';
 
 class App extends Component {
 
@@ -35,7 +36,9 @@ class App extends Component {
         <Router>
           <Switch>
 
-          <Route path="/decks/:id/cards" exact strict component={DeckFlashcards} />
+          <Route path="/study/:id/" exact component={StudyLesson} />
+
+          <Route path="/decks/:id/cards" exact component={DeckFlashcards} />
 
           <Route path="/dashboard/:id/decks"
             exact strict 

@@ -54,7 +54,7 @@ class CardsPreviewModal extends Component {
                     isOpen={this.state.modal}
                     toggle={this.toggle}
                     centered={true}
-                    size="lg"
+                    size="xl"
                 >
                     <ModalHeader style={{ borderBottom: 0, margin:"auto" }} >{deck ? deck.name : null} Flashcards</ModalHeader>
                     <ModalBody>
