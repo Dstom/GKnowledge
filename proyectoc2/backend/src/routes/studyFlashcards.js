@@ -6,6 +6,6 @@ const { addFlashcardsToStudy } = require('../controllers/flashcards.controller')
 const auth = require('../middlewares/auth');
 
 router.route('/')
-    .post(auth, addFlashcardsToStudy)  
+    .post( addFlashcardsToStudy)  
         
 module.exports = router;
