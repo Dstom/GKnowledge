@@ -15,13 +15,11 @@ const { FlashcardCardbox }= require('../models/UserFlashcard');
 
 flashcardsController.addFlashcardsToStudy = async (req, res) => {
 
-
     const { user, deck } = req.body;
     // busccar todos los flashcards para agregar al estudio
     const allCards = await Flashcard.find({deck: deck});
 
-    const userFlashcardExists = await UserFlashcard.find({ user: user, deck: deck });
-    
+    const userFlashcardExists = await UserFlashcard.find({ user: user, deck: deck });    
 
     if(!userFlashcardExists){
         const newUserFlashcard = new UserFlashcard({});
@@ -33,9 +31,7 @@ flashcardsController.addFlashcardsToStudy = async (req, res) => {
             newFlashcardCardbox.flashcard = card;
             newUserFlashcard.flashcards.push(newFlashcardCardbox)
         });
-
         res.json(newUserFlashcard);        
-
     }else{
         //EXISTE
         allCards.map(card => {

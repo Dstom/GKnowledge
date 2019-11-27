@@ -814,15 +814,6 @@
     position: relative;
 }
 
-.study-card-bars .study-card-bar.question-bar.is-showing {
-    opacity: 1;
-    transition: opacity .45s ease 0s;
-    z-index: 10;
-}
-
-.study-card-bars .study-card-bar.question-bar.confidence-3 {
-    background-color: #fd0;
-}
 .study-card-table .study-card-table-contents .study-card-bar {
     margin: 18px 24px 0;
 }
@@ -838,12 +829,7 @@
     height: 10vh;
     justify-content: center;
 }
-.study-card-bars .study-card-bar {
-    position: absolute;
-    opacity: 0;
-    transition: opacity .5s ease 0s;
-    width: calc(100% - 48px);
-}
+
 .study-card-face .card-content {
     color: #333;
     display: flex;
@@ -917,51 +903,43 @@
     z-index: 10
 }
 
-.study-card.question-mode .study-card-face.answer-face {
+.study-card.question-mode .study-card-face.answer-enter {
     opacity: 0;
     pointer-events: none;
-    top: -60px
+    top: -60px;
 }
-/**/
-.study-card.question-mode .study-card-face.question-face {
-    top: 0;
-    z-index: 10
-}
-
-.study-card.question-mode .study-card-face.answer-face {
-    opacity: 0
-}
-.study-card.answer-mode .study-card-face.question-face {
-    opacity: 0;
-    pointer-events: none;
-    top: 60px
-}
-
-.study-card.answer-mode .study-card-face.answer-face {
-    top: 0;
-    z-index: 10
-}
-
-.study-card.answer-mode .study-card-face.question-face {
-    opacity: 0
-}
-
-.study-card.answer-mode .study-card-face.answer-face {
-    top: 0;
-    z-index: 10
-}
-
-.my-node-enter {
-    opacity: 0;
-  }
-.my-node-enter-active {
+.study-card.answer-mode .study-card-face.answer-active {
     opacity: 1;
-    transition: opacity 200ms;
+    top: 0;
+    z-index: 10;
+    transition: opacity 300ms, transform 300ms;
 }
-.my-node-exit {
+
+.study-card.answer-mode .study-card-face.answer-exit {
     opacity: 1;
+    top: 0;
+    z-index: 10;
 }
-.my-node-exit-active {
+.study-card.answer-mode .study-card-face.answer-exit-active {
     opacity: 0;
-    transition: opacity 200ms;
+    top: -60px;
+    z-index: 10;
+    transition: opacity 300ms, transform 300ms;
+}
+/* question bar*/
+.study-card-bars .study-card-bar.answerbar-enter {
+    opacity: 0;   
+}
+.study-card-bars .study-card-bar.answerbar-enter-active {
+    opacity: 1;
+    transition: opacity .45s ease 0s;
+    z-index: 10;
+}
+.study-card-bars .study-card-bar.answerbar-enter-exit {
+    opacity: 1;
+    transition: opacity .45s ease 0s;
+    z-index: 10;
+}
+.study-card-bars .study-card-bar.answerbar-enter-exit-active {
+    opacity: 0;    
 }

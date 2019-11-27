@@ -6,8 +6,8 @@ import './dashboard/style.css'
 class StudyLesson extends Component {
 
     state = {
-        showButton: true,
-        showMessage: false,
+        showCardBar: true,
+        showButtons: false,
         showQuestion: true,
         showAnswer: false
     }
@@ -49,7 +49,7 @@ class StudyLesson extends Component {
 
 
                 <div className="study-card-table">
-                    <div class="study-card-table-contents">
+                    <div className="study-card-table-contents">
                         <header className="study-card-table-header">
                             <div className="deck-and-card-info">
                                 <span className="deck-name">Deck name</span>
@@ -57,15 +57,17 @@ class StudyLesson extends Component {
                         </header>
 
                         <div className="study-cards are-placed">
-                            <div className="study-card question-mode is-placed current-card">
-                                { this.state.showQuestion &&
+                            <div className="study-card question-mode current-card">
+                                {this.state.showQuestion &&
                                     <div className="study-card-face question-face"
-                                    onClick={() => this.setState({ showAnswer:true })}
+                                        onClick={ () => 
+                                            this.setState({ showAnswer: true, showButtons: true})
+                                        }
                                     >
                                         <header className="card-face-header">
                                             <div>
                                                 P
-                                  </div>
+                                    </div>
                                         </header>
 
                                         <div className="card-content">
@@ -80,18 +82,18 @@ class StudyLesson extends Component {
                                 <CSSTransition
                                     in={this.state.showAnswer}
                                     timeout={300}
-                                    classNames="question-mode"
+                                    classNames="answer"
                                     unmountOnExit
                                     onEnter={() => this.setState({ showQuestion: false })}
                                     onExited={() => this.setState({ showQuestion: true })}
                                 >
                                     <div className="study-card-face answer-face"
-                                    onClick={() => this.setState({ show:false })}
+                                        onClick={() => this.setState({ showAnswer: false, showButtons: false })}
                                     >
                                         <header className="card-face-header">
                                             <div>
                                                 R
-                                        </div>
+                                            </div>
                                         </header>
                                         <div className="card-content">
                                             <div className="card-body-study">
@@ -106,12 +108,27 @@ class StudyLesson extends Component {
                         </div>
 
                         <div className="study-card-bars">
-                            <div className="study-card-bar question-bar is-showing">
-                                Mostrar Respuesta
-                            </div>
 
+                            {this.state.showCardBar &&
+                                <div className="study-card-bar question-bar" 
+                                onClick={ () => 
+                                    this.setState({ showAnswer: true, showButtons: true })                                  
+                                }
+                                >
+                                    Mostrar Respuesta
+                                </div>
+                            } 
+
+                            <CSSTransition
+                                    in={this.state.showButtons}
+                                    timeout={300}
+                                    classNames="answerbar"
+                                    unmountOnExit
+                                    onEnter={() => this.setState({ showCardBar: false })}
+                                    onExited={() => this.setState({ showCardBar: true })}
+                            >    
                             <div className="study-card-bar answer-bar">
-                                <div class="card-bar-prompt">Tenias conocimiento de la respuesta?</div>
+                                <div className="card-bar-prompt">Tenias conocimiento de la respuesta?</div>
                                 <div className="confidence-level-buttons">
                                     {// data-level="0" para negacion de respuesta "1" para afirmacion de respuesta
                                     }
@@ -123,7 +140,11 @@ class StudyLesson extends Component {
                                     </div>
 
                                 </div>
-                            </div>
+                            </div>   
+
+                            </CSSTransition>                  
+
+                            
                         </div>
                     </div>
                 </div>
