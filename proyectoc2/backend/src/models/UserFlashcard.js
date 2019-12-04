@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-let FlashcardCardboxSchema = new Schema({
+let flashcardCardboxSchema = new Schema({
     flashcard: {
        type: Schema.Types.ObjectId,
        ref: 'Flashcard'
@@ -8,16 +8,16 @@ let FlashcardCardboxSchema = new Schema({
     cardbox: {
        type: String, default: '0'
     }
-});
+}, {_id: false});
 
-let UserFlashcardSchema = new Schema({
+let userFlashcardSchema = new Schema({
     deck: { type: Schema.Types.ObjectId, required: true, ref: 'Deck'},
-    flashcards: [{FlashcardCardboxSchema}],
+    flashcards: [flashcardCardboxSchema],
     user: { type: Schema.Types.ObjectId, required: true, ref: 'User'},
 });
 //module.exports =  model('UserFlashcard', UserFlashcardSchema);
 
-const UserFlashcard = model('UserFlashcard', UserFlashcardSchema);
-const FlashcardCardbox = model('FlashcardCardbox', FlashcardCardboxSchema);
+const userFlashcard = model('userFlashcard', userFlashcardSchema);
+const flashcardCardbox = model('flashcardCardbox', flashcardCardboxSchema);
 
-module.exports = { UserFlashcard, FlashcardCardbox }
+module.exports = { userFlashcard, flashcardCardbox }

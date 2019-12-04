@@ -1,17 +1,87 @@
-import React, { Component } from 'react'
-import { CSSTransition } from 'react-transition-group';
-import { Container, Button, Alert } from 'reactstrap';
+import React, { Component } from 'react';
+import StudyFlashcard from './StudyFlashcard';
+import { connect } from 'react-redux'
+
+import {getFlashcardToStudy} from '../actions/studyActions'
+import PropTypes from 'prop-types'
 
 import './dashboard/style.css'
 class StudyLesson extends Component {
-
-    state = {
-        showCardBar: true,
-        showButtons: false,
-        showQuestion: true,
-        showAnswer: false
+    
+    constructor(props){
+        super(props);
+        this.state = {
+            count: 0,
+            total: null,
+            questionAnswered: false
+        }
     }
-    render() {
+
+    static propTypes = {
+        auth: PropTypes.object.isRequired,
+        study: PropTypes.object.isRequired
+    }  
+
+    componentDidMount(){
+        if(this.props.auth.user){
+            this.props.getFlashcardToStudy(this.props.auth.user._id,this.props.match.params.id);            
+        }        
+    }  
+
+    componentDidUpdate(prevProps) {
+        const {user} = this.props.auth;
+
+        const {study} = this.props;
+
+        if(user && user !== prevProps.auth.user){
+            this.props.getFlashcardToStudy(this.props.auth.user._id,this.props.match.params.id); 
+        }  
+
+       if(study.deckStudy && study.deckStudy !== prevProps.study.deckStudy) {
+            this.setState({ 
+                total: this.props.study.deckStudy.flashcards.length
+            });
+            if(!this.props.study.isLoading){
+                let {count} = this.state;
+                this.pushFlashcard(count);    
+            }
+        }        
+    }
+
+    pushFlashcard(count){
+        console.log("deckStudy",this.props.study.deckStudy);
+        console.log("count", count);
+        const {flashcards} = this.props.study.deckStudy;
+        console.log(flashcards);
+        this.setState({
+            question: flashcards[count].flashcard.question,
+            answer: flashcards[count].flashcard.answer,
+            flashcardId: flashcards[count].flashcard._id,
+            count: this.state.count + 1
+        });
+    }
+    
+    nextFlashcard(){
+        let { count, total } = this.state;
+        if(count === total){
+
+        }else{
+            this.pushFlashcard(count);
+            this.setState({
+                questionAnswered: false                
+            });
+        }
+    }
+
+    render() {       
+        let deck ;
+        if(this.props.study.deckStudy){
+            deck = this.props.study.deckStudy.deck;
+        }  
+        
+        
+        let { count, total, question, answer, questionAnswered, flashcardId} = this.state; 
+
         return (
             <div className="study-page">
                 <div className="study-sidebar">
@@ -22,7 +92,7 @@ class StudyLesson extends Component {
                                 <div className="study-mix-icon">
 
                                 </div>
-                                <h3 className="study-mix-name">Deckname</h3>
+                                <h3 className="study-mix-name">{deck && deck.name}</h3>
                             </div>
                         </div>
                     </header>
@@ -52,104 +122,36 @@ class StudyLesson extends Component {
                     <div className="study-card-table-contents">
                         <header className="study-card-table-header">
                             <div className="deck-and-card-info">
-                                <span className="deck-name">Deck name</span>
+
+                                <span className="deck-label">
+                                Deck:&nbsp;
+                                </span>
+                                <span className="deck-name">
+                                    {deck && deck.name}
+                                </span>
+                                <span>
+                                &nbsp;Flashcard {count}/{total}
+                                </span>
                             </div>
                         </header>
 
-                        <div className="study-cards are-placed">
-                            <div className="study-card question-mode current-card">
-                                {this.state.showQuestion &&
-                                    <div className="study-card-face question-face"
-                                        onClick={ () => 
-                                            this.setState({ showAnswer: true, showButtons: true})
-                                        }
-                                    >
-                                        <header className="card-face-header">
-                                            <div>
-                                                P
-                                    </div>
-                                        </header>
+                        <StudyFlashcard
+                        answer={answer}
+                        question={question}
+                        isAnswered={questionAnswered}
+                        flashcardId={flashcardId}                        
+                        />      
 
-                                        <div className="card-content">
-                                            <div className="card-body-study">
-                                                <div className="inner-html">
-                                                    <p>Pregunta</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                <CSSTransition
-                                    in={this.state.showAnswer}
-                                    timeout={300}
-                                    classNames="answer"
-                                    unmountOnExit
-                                    onEnter={() => this.setState({ showQuestion: false })}
-                                    onExited={() => this.setState({ showQuestion: true })}
-                                >
-                                    <div className="study-card-face answer-face"
-                                        onClick={() => this.setState({ showAnswer: false, showButtons: false })}
-                                    >
-                                        <header className="card-face-header">
-                                            <div>
-                                                R
-                                            </div>
-                                        </header>
-                                        <div className="card-content">
-                                            <div className="card-body-study">
-                                                <div className="inner-html">
-                                                    <p>RESPUESTA</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </CSSTransition>
-                            </div>
-                        </div>
-
-                        <div className="study-card-bars">
-
-                            {this.state.showCardBar &&
-                                <div className="study-card-bar question-bar" 
-                                onClick={ () => 
-                                    this.setState({ showAnswer: true, showButtons: true })                                  
-                                }
-                                >
-                                    Mostrar Respuesta
-                                </div>
-                            } 
-
-                            <CSSTransition
-                                    in={this.state.showButtons}
-                                    timeout={300}
-                                    classNames="answerbar"
-                                    unmountOnExit
-                                    onEnter={() => this.setState({ showCardBar: false })}
-                                    onExited={() => this.setState({ showCardBar: true })}
-                            >    
-                            <div className="study-card-bar answer-bar">
-                                <div className="card-bar-prompt">Tenias conocimiento de la respuesta?</div>
-                                <div className="confidence-level-buttons">
-                                    {// data-level="0" para negacion de respuesta "1" para afirmacion de respuesta
-                                    }
-                                    <div className="confidence-level-button confidence-no" data-level="0">
-                                        No
-                                    </div>
-                                    <div className="confidence-level-button confidence-yes" data-level="1">
-                                        Si
-                                    </div>
-
-                                </div>
-                            </div>   
-
-                            </CSSTransition>                  
-
-                            
-                        </div>
                     </div>
                 </div>
             </div>
         )
     }
 }
-export default StudyLesson;
+const mapStateToProps = (state) => ({
+    auth: state.auth,
+    study: state.study
+});
+
+
+export default (connect(mapStateToProps, { getFlashcardToStudy })(StudyLesson))

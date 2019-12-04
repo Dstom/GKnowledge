@@ -3,11 +3,13 @@ const flashcardsController = {}
 const Deck = require('../models/Deck');
 const Flashcard = require('../models/Flashcard');
 const User = require('../models/User');
-const { UserFlashcard }= require('../models/UserFlashcard');
-const { FlashcardCardbox }= require('../models/UserFlashcard');
+const { userFlashcard } = require('../models/UserFlashcard');
+const { flashcardCardbox } = require('../models/UserFlashcard');
 
 
 /**
+ * Metodo para crear las flashcards a estudiar
+ * 
  * @route POST api/studyflashcards/
  * @param deckId id de deck
  * @param userId id de usuario
@@ -17,48 +19,89 @@ flashcardsController.addFlashcardsToStudy = async (req, res) => {
 
     const { user, deck } = req.body;
 
-    console.log(user,deck);
+    console.log(user, deck);
 
     // busccar todos los flashcards para agregar al estudio
-    const allCards = await Flashcard.find({deck: deck});
+    const allCards = await Flashcard.find({ deck: deck });
 
-    const userFlashcardExists = await UserFlashcard.find({ user: user, deck: deck });    
-    console.log(userFlashcardExists);
-    if(userFlashcardExists){
+    let idFlashcardExists = [];
+    let idAllCards = [];
 
-        userFlashcardExists
-        
+    allCards.map(card => {
+        idAllCards.push(card._id);
+    });
+
+    let userFlashcardExists = await userFlashcard.findOne({ user: user, deck: deck }).populate('flashcards.flashcard');
+    if (userFlashcardExists) {
         //EXISTE
-        allCards.map(card => {
-            userFlashcardExists.map(studyCard => {                
-                if(card != studyCard){
-                    const newFlashcardCardbox = new FlashcardCardbox({ });
-                    newFlashcardCardbox.flashcard = card;
-                    userFlashcardExists.flashcards.push(newFlashcardCardbox);
-                }
-            });
+        console.log('exists');
+        userFlashcardExists.flashcards.map(studyCard => {
+            idFlashcardExists.push(studyCard.flashcard._id);
         });
-        userFlashcardExists.save();
-        res.json(userFlashcardExists);             
-    }else{
-        const newUserFlashcard = new UserFlashcard({});
+        //comparamos arrays
+        let difference = idAllCards.filter(cardId => !idFlashcardExists.some(existsId => cardId.toString() === existsId.toString()));
+        console.log({ idAllCards, idFlashcardExists, difference });
+        difference.map(newCardId => {
+            let newFlashcardCardbox = new flashcardCardbox({});
+            newFlashcardCardbox.flashcard = newCardId;
+            newFlashcardCardbox.cardbox = '0';
+            userFlashcardExists.flashcards.push(newFlashcardCardbox);
+        });
+        await userFlashcardExists.save();
+
+        const userFlashcardExistsPopulated = await userFlashcard.findOne({ user: user, deck: deck })
+            .populate('flashcards.flashcard')
+            .populate('deck', ['name', 'objective']);
+
+        res.json(userFlashcardExistsPopulated);
+    } else {
+        let newUserFlashcard = new userFlashcard({});
         //NO EXISTE
         newUserFlashcard.user = user;
         newUserFlashcard.deck = deck;
-        allCards.map(card  => {
-            const newFlashcardCardbox = new FlashcardCardbox({});
+        allCards.map(card => {
+            let newFlashcardCardbox = new flashcardCardbox({});
             newFlashcardCardbox.flashcard = card;
-            newUserFlashcard.flashcards.push(newFlashcardCardbox)
+            newFlashcardCardbox.cardbox = '0';
+            newUserFlashcard.flashcards.push(newFlashcardCardbox);
 
         });
-        newUserFlashcard.save();
-        res.json(newUserFlashcard);                
-    }    
+        await newUserFlashcard.save();
+
+        const findNewUserFLashcard = await userFlashcard.findOne({ user: user, deck: deck })
+            .populate('flashcards.flashcard')
+            .populate('deck', ['name', 'objective'])
+        res.json(findNewUserFLashcard);
+    }
 }
+
 module.exports = flashcardsController;
 
+
 /**
- * @route POST api/studyflashcards/:id
+ * @route PUT api/studyflashcards/
  * @param deckId id de deck
  * @param userId id de usuario
+ * @param flashcardId id de flashcard, actualizar cardbox
  */
+
+flashcardsController.updateStudyFlashcard = async (req, res) => {
+    const { user, deck, flashcardId } = req.body;
+
+   /* let userFlashcards = await userFlashcard.findOne({ user: user, deck: deck }).populate('flashcards.flashcard');
+
+    userFlashcard.findOneAndUpdate(
+        { user: user, deck, deck, 'flashcards.flashcard': flashcardId },
+        {
+            '$set': {
+                'flashcard.$.cardbox': 'updated item2',
+                'items.$.value': 'two updated'
+            }
+        }
+    );*/
+
+    const test = userFlashcard.update({ user: user, deck: deck, 'flashcards.flashcard': flashcardId },
+    {"$set": {"flashcards.flashcard.$.cardbox": "3"}});
+    console.log("test",  test);
+    res.json(test);
+}

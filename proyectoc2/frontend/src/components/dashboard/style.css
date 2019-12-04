@@ -943,3 +943,8 @@
 .study-card-bars .study-card-bar.answerbar-enter-exit-active {
     opacity: 0;    
 }
+.study-card-table .study-card-table-contents .study-card-table-header .deck-and-card-info {
+    align-items: center;
+    color: #888;
+    display: flex;
+}
