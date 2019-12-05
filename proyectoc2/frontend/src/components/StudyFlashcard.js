@@ -21,7 +21,15 @@ export default class StudyFlashcard extends Component {
             let elem = e.currentTarget;
             let answerConfidence = Number(elem.dataset.id);
             console.log(answerConfidence);
+
+            this.props.showButton();
         }
+    }
+
+    handleNextQuestion(){
+        this.setState({ 
+            questionAnswered: true
+        });
     }
 
     render() {
@@ -66,7 +74,7 @@ export default class StudyFlashcard extends Component {
                                 <header className="card-face-header">
                                     <div>
                                         R
-                                            </div>
+                                    </div>
                                 </header>
                                 <div className="card-content">
                                     <div className="card-body-study">
@@ -89,7 +97,7 @@ export default class StudyFlashcard extends Component {
                             }
                         >
                             Mostrar Respuesta
-                                </div>
+                        </div>
                     }
 
                     <CSSTransition
@@ -111,7 +119,7 @@ export default class StudyFlashcard extends Component {
                                     No
                                     </div>
                                 <div className="confidence-level-button confidence-yes" data-id="1"
-                                    onClick={this.checkAnswerConfidence}
+                                    onClick={this.checkAnswerConfidence}    
                                 >
                                     Si
                                     </div>

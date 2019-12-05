@@ -44,7 +44,7 @@ flashcardsController.addFlashcardsToStudy = async (req, res) => {
         difference.map(newCardId => {
             let newFlashcardCardbox = new flashcardCardbox({});
             newFlashcardCardbox.flashcard = newCardId;
-            newFlashcardCardbox.cardbox = '0';
+            newFlashcardCardbox.cardbox = 0;
             userFlashcardExists.flashcards.push(newFlashcardCardbox);
         });
         await userFlashcardExists.save();
@@ -62,7 +62,7 @@ flashcardsController.addFlashcardsToStudy = async (req, res) => {
         allCards.map(card => {
             let newFlashcardCardbox = new flashcardCardbox({});
             newFlashcardCardbox.flashcard = card;
-            newFlashcardCardbox.cardbox = '0';
+            newFlashcardCardbox.cardbox = 0;
             newUserFlashcard.flashcards.push(newFlashcardCardbox);
 
         });
@@ -83,25 +83,30 @@ module.exports = flashcardsController;
  * @param deckId id de deck
  * @param userId id de usuario
  * @param flashcardId id de flashcard, actualizar cardbox
+ * @param answerConfidence respuesta del usuario al flashcard, 0 para negacion y 1 afirmacion
  */
 
 flashcardsController.updateStudyFlashcard = async (req, res) => {
-    const { user, deck, flashcardId } = req.body;
+    const { user, deck, flashcardId, answerConfidence } = req.body;
+    let userFlashcards = await userFlashcard.findOne({ user: user, deck: deck });
 
-   /* let userFlashcards = await userFlashcard.findOne({ user: user, deck: deck }).populate('flashcards.flashcard');
+    userFlashcards.flashcards.map(card => {
 
-    userFlashcard.findOneAndUpdate(
-        { user: user, deck, deck, 'flashcards.flashcard': flashcardId },
-        {
-            '$set': {
-                'flashcard.$.cardbox': 'updated item2',
-                'items.$.value': 'two updated'
+        if (card.flashcard.toString() === flashcardId.toString()) {
+
+            if (answerConfidence === 1) {
+                let newConfidence = card.cardbox + 1;
+                if(newConfidence <= 2){
+                    card.cardbox = newConfidence;
+                }
             }
+            if (answerConfidence === 0) {
+                card.cardbox = 0
+            } 
         }
-    );*/
+    })
 
-    const test = userFlashcard.update({ user: user, deck: deck, 'flashcards.flashcard': flashcardId },
-    {"$set": {"flashcards.flashcard.$.cardbox": "3"}});
-    console.log("test",  test);
-    res.json(test);
+    await userFlashcards.save();
+    let userFlashcardsResponse = await userFlashcard.findOne({ user: user, deck: deck }).populate('flashcards.flashcard');
+    res.json(userFlashcardsResponse);
 }

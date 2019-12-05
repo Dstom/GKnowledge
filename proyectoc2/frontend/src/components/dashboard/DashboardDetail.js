@@ -125,7 +125,7 @@ class DashboardDetail extends Component {
                                 </Fragment> :
                                 <div className="pack-no-deck-info">
                                     <h2 className="deck-name">Esta clase no tiene barajas para practicar</h2>
-                                    <Button color="warning" >Crear Baraja</Button>                                    
+                                    
                                     <DeckModal />
                                 </div>
                             : null

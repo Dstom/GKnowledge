@@ -57,7 +57,7 @@ class DeckModal extends Component {
     render() {
         return (
             <Fragment>
-                <Link onClick={this.toggle} to="#">
+                <Link onClick={this.toggle} to="#" className="btn btn-warning" style={{color:"#fff"}}>
                     Crear un Nuevo Deck
                 </Link> 
                 

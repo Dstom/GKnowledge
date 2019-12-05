@@ -14,14 +14,10 @@ export default function(state = initialState, action){
                 deckStudy: action.payload,
                 isLoading: false
             }
-       /* case UPDATE_FLASHCARD_STUDY:
+        case UPDATE_FLASHCARD_STUDY:
             return{
-                ...state,
-                deck:{
-                    ...state.deck,
-                    flashcards: [action.payload, ...state.deck.flashcards]
-                }
-            } */
+                ...state
+            } 
         case STUDY_LOADING:
             return{
                 ...state,

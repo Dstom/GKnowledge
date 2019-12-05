@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import StudyFlashcard from './StudyFlashcard';
 import { connect } from 'react-redux'
 
-import {getFlashcardToStudy} from '../actions/studyActions'
+import {getFlashcardToStudy, updateFLashcardBox} from '../actions/studyActions'
 import PropTypes from 'prop-types'
 
 import './dashboard/style.css'
@@ -64,6 +64,7 @@ class StudyLesson extends Component {
     nextFlashcard(){
         let { count, total } = this.state;
         if(count === total){
+            alert("Culminaste el estudio");
 
         }else{
             this.pushFlashcard(count);
@@ -71,6 +72,12 @@ class StudyLesson extends Component {
                 questionAnswered: false                
             });
         }
+    }
+
+    handleShowButton() {
+        this.setState({
+            questionAnswered: true
+        })
     }
 
     render() {       
@@ -139,7 +146,9 @@ class StudyLesson extends Component {
                         answer={answer}
                         question={question}
                         isAnswered={questionAnswered}
-                        flashcardId={flashcardId}                        
+                        flashcardId={flashcardId} 
+                        showButton={this.handleShowButton} 
+                        nextFlashcard={this.nextFlashcard}
                         />      
 
                     </div>
@@ -154,4 +163,5 @@ const mapStateToProps = (state) => ({
 });
 
 
-export default (connect(mapStateToProps, { getFlashcardToStudy })(StudyLesson))
+export default (connect(mapStateToProps, 
+    { getFlashcardToStudy, updateFLashcardBox })(StudyLesson))

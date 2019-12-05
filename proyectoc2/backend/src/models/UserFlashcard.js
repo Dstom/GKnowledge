@@ -6,7 +6,7 @@ let flashcardCardboxSchema = new Schema({
        ref: 'Flashcard'
     },
     cardbox: {
-       type: String, default: '0'
+       type: Number, default: 0
     }
 }, {_id: false});
 

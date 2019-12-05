@@ -19,6 +19,16 @@ export const getFlashcardToStudy = (user,deck) => async (dispatch, getState) => 
         return err => dispatch(returnErrors(err.response.data, err.response.status))
     }
 }
+export const updateFLashcardBox =  (user,deck, flashcardId, answerConfidence) => async (dispatch, getState) => {
+    try {
+        const res = await axios.put('http://localhost:4000/api/studyflashcards' ,{user,deck, flashcardId, answerConfidence} );
+        return Promise.resolve(dispatch({
+            type: UPDATE_FLASHCARD_STUDY
+        }));
+    } catch (err) {
+        return err => dispatch(returnErrors(err.response.data, err.response.status))
+    }
+}
 
 export const setStudyLoading = () => {
     return {

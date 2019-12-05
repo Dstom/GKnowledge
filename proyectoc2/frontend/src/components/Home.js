@@ -21,8 +21,15 @@ export default class Home extends Component {
                         <p className="lead">Aprende rápido</p>
                     </Container>
                 </Jumbotron>
+                
+                
+            </Fragment>
+        )
+    }
+}
 
-                <Row>
+/*
+<Row>
                     <Col md="6" className="slide-content">
                         <h2>Aprende Rápdio</h2>
                     </Col>
@@ -30,8 +37,6 @@ export default class Home extends Component {
                     asd
                     </Col>
                 </Row>
-            <Footer />
-            </Fragment>
-        )
-    }
-}
+                            <Footer />
+
+*/
