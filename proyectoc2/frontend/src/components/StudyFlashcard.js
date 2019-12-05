@@ -1,8 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import './dashboard/style.css'
+import { connect } from 'react-redux';
+import { updateFLashcardBox } from '../actions/studyActions';
 
-export default class StudyFlashcard extends Component {
+
+
+class StudyFlashcard extends Component {
 
     constructor(props) {
         super(props);
@@ -13,11 +17,11 @@ export default class StudyFlashcard extends Component {
             showAnswer: false
         }
         this.checkAnswerConfidence = this.checkAnswerConfidence.bind(this);
-    }   
+    }
 
     checkAnswerConfidence(e) {
         let { isAnswered } = this.props;
-        if(!isAnswered){
+        if (!isAnswered) {
             let elem = e.currentTarget;
             let answerConfidence = Number(elem.dataset.id);
             console.log(answerConfidence);
@@ -26,11 +30,12 @@ export default class StudyFlashcard extends Component {
         }
     }
 
-    handleNextQuestion(){
-        this.setState({ 
+    handleNextQuestion() {
+        this.setState({
             questionAnswered: true
         });
     }
+   
 
     render() {
         let { answer, question } = this.props;
@@ -110,16 +115,19 @@ export default class StudyFlashcard extends Component {
                     >
                         <div className="study-card-bar answer-bar">
                             <div className="card-bar-prompt">Tenias conocimiento de la respuesta?</div>
-                            <div className="confidence-level-buttons">
+                            <div className="confidence-level-buttons"
+                            onClick={() => this.setState({ showAnswer: false, showButtons: false })}
+                            >
                                 {// data-level="0" para negacion de respuesta "1" para afirmacion de respuesta
                                 }
                                 <div className="confidence-level-button confidence-no" data-id="0"
-                                    onClick={this.checkAnswerConfidence}
+                                    onClick={this.checkAnswerConfidence, this.props.nextFlashcard}
+
                                 >
                                     No
                                     </div>
                                 <div className="confidence-level-button confidence-yes" data-id="1"
-                                    onClick={this.checkAnswerConfidence}    
+                                    onClick={ this.checkAnswerConfidence, this.props.nextFlashcard}
                                 >
                                     Si
                                     </div>
@@ -132,3 +140,5 @@ export default class StudyFlashcard extends Component {
         )
     }
 }
+
+export default (connect(null, { updateFLashcardBox })(StudyFlashcard))
